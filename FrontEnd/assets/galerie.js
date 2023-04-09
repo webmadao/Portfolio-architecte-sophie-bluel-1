@@ -1,6 +1,6 @@
 
 
-
+/*------- Faire appel à mon API avec fetch (function)----------*/
 function getWorks() {
   fetch('http://localhost:5678/api/works')
     .then(response => response.json())
@@ -9,7 +9,7 @@ function getWorks() {
       addFilterListeners(data);
     });
 }
-
+/*------------- Création de la gellery via le DOM-----------*/
 function section(works) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = '';
@@ -31,6 +31,8 @@ function section(works) {
     gallery.appendChild(workItem);
   });
 }
+
+/*------------- Création filter-----------*/
 
 function addFilterListeners(works) {
   const boutonTous = document.querySelector(".filter-tous");
