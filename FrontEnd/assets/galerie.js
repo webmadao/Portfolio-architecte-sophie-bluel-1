@@ -1,18 +1,17 @@
-/*------- Faire appel à mon API avec fetch (function)----------*/
+// Faire appel à mon API avec fetch
 function getWorks() {
   fetch('http://localhost:5678/api/works')
-    .then(response => response.json())
+    .then(response => response.json()) // Récupérer les données au format JSON
     .then((data) => {
-      section(data);
-      addFilterListeners(data);
+      section(data); // Appeler la fonction section() pour afficher les données
+      addFilterListeners(data); // Ajouter les listeners pour les filtres
     });
 }
 
-/*------------- Création de la gellery via le DOM-----------*/
-
+// Création de la galerie via le DOM
 function section(works) {
   const gallery = document.querySelector('.gallery');
-  gallery.innerHTML = '';
+  gallery.innerHTML = ''; // Effacer le contenu de la galerie précédente
 
   works.forEach(work => {
     const workItem = document.createElement('div');
@@ -28,26 +27,25 @@ function section(works) {
     workItem.appendChild(workImage);
     workItem.appendChild(workTitle);
 
-    gallery.appendChild(workItem);
+    gallery.appendChild(workItem); // Ajouter chaque élément à la galerie
   });
 }
 
-/*------------- Création filter-----------*/
-
+// Création des filtres
 function addFilterListeners(works) {
   const boutonTous = document.querySelector(".filter-tous");
 
   boutonTous.addEventListener("click", function () {
-    section(works);
+    section(works); // Afficher tous les éléments
   });
 
   const boutonObjets = document.querySelector(".filter-objets");
 
   boutonObjets.addEventListener("click", function () {
     const filterObjects = works.filter(function (work) {
-      return work.category.id === 1;
+      return work.category.id === 1; // Filtrer les éléments par catégorie
     });
-    section(filterObjects);
+    section(filterObjects); // Afficher les éléments filtrés
   });
 
   const boutonAppartement = document.querySelector(".filter-appartements");
@@ -68,9 +66,7 @@ function addFilterListeners(works) {
     section(filterHotelRestaurants);
   });
 }
-getWorks();
 
-
-
+getWorks(); // Appeler la fonction getWorks() pour afficher la galerie et les filtres
 
 
