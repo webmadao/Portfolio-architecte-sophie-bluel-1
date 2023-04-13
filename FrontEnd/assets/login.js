@@ -36,8 +36,11 @@ function handleLogin(event) {
             // Affichage d'un message d'erreur si les informations d'identification sont incorrectes ou si une erreur inattendue s'est produite
             alert("Les informations d\'identification sont incorrectes");
         });
+
 }
 
 // Ajout d'un événement d'écouteur pour le bouton de connexion
 const loginButton = document.querySelector('#login-button');
 loginButton.addEventListener('click', handleLogin);
+
+
