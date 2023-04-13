@@ -34,8 +34,6 @@ function handleLogin(event) {
         })
         .catch(error => {
             // Affichage d'un message d'erreur si les informations d'identification sont incorrectes ou si une erreur inattendue s'est produite
-            /* const errorSpan = document.getElementById('error');
-             errorSpan.innerText = error.message;*/
             alert("Les informations d\'identification sont incorrectes");
         });
 }
