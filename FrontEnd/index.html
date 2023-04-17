@@ -15,7 +15,14 @@
 </head>
 
 <body>
+	<section class="top-edition">
+
+		<button class="mode-edition"><i class="fa-regular fa-pen-to-square"></i>Mode édition</button>
+
+		<button class="publication-changements">publier les changements</button>
+	</section>
 	<header>
+
 		<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
 		<nav>
 			<ul>
@@ -32,9 +39,14 @@
 			<figure>
 				<img src="./assets/images/sophie-bluel.png" alt="">
 			</figure>
+
 			<article>
+				<button class="mode-edition"><i class="fa-regular fa-pen-to-square"></i>Modifier
+				</button>
+
 				<h2>Designer d'espace</h2>
-				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la livraison
+				<p>Je raconte votre histoire, je valorise vos idées. Je vous accompagne de la conception à la
+					livraison
 					finale du chantier.</p>
 				<p>Chaque projet sera étudié en commun, de façon à mettre en valeur les volumes, les matières et les
 					couleurs dans le respect de l’esprit des lieux et le choix adapté des matériaux. Le suivi du
@@ -45,11 +57,76 @@
 		</section>
 		<section id="portfolio">
 			<h2>Mes Projets</h2>
+
+			<a href="#" onclick="modale()"><i class="fa-regular fa-pen-to-square"></i>Modifier</a>
+
+			<div id="modale-gallery">
+
+				<div class="travaux">
+					<h3>Galerie photo</h3>
+					<div class="images">
+						<figure>
+							<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/restaurant-sushisen-londres.png"
+								alt="Restaurant Sushisen - Londres">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
+							<figcaption>éditer</figcaption>
+						</figure>
+						<figure>
+							<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
+							<figcaption>éditer</figcaption>
+						</figure>
+					</div>
+					<!--<a href="#" onclick="example()">Cliquez ici pour fermer la boîte</a>-->
+					<ul>
+						<li class="ajouter-photo"><a href="#" onclick="modaleGallery()">Ajouter une photo</a></li>
+						<li class="supprimer-galerie"><a href="#" onclick="modaleGallery()">Supprimer la galerie</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+
 			<div class="filters">
 				<button class="filter-tous" data-tous="all">Tous</button>
 				<button class="filter-objets" data-objet="objets">Objets</button>
 				<button class="filter-appartements" data-appartement="appartement">Appartement</button>
-				<button class="filter-hotel-restaurants" data-hotel-restaurant="hotel">Hôtel &amp; Restaurant</button>
+				<button class="filter-hotel-restaurants" data-hotel-restaurant="hotel">Hôtel &amp;
+					Restaurant</button>
 			</div>
 
 
