@@ -1,3 +1,4 @@
+
 // Faire appel à mon API avec fetch
 function getWorks() {
   fetch('http://localhost:5678/api/works')
@@ -5,6 +6,7 @@ function getWorks() {
     .then((data) => {
       section(data); // Appeler la fonction section() pour afficher les données
       addFilterListeners(data); // Ajouter les listeners pour les filtres
+
     });
 }
 
@@ -65,8 +67,101 @@ function addFilterListeners(works) {
     });
     section(filterHotelRestaurants);
   });
+
+  function openModal() {
+    const modaleGallery = document.getElementById("modale-gallery");
+    modaleGallery.style.display = "block";
+    const travaux = document.querySelector(".travaux");
+    travaux.classList.add("open");
+    travaux.addEventListener("click", function () {
+      console.log("top");
+    });
+  }
+
 }
 
-getWorks(); // Appeler la fonction getWorks() pour afficher la galerie et les filtres
+getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
+
+const openModal = function (e) {
+  e.preventDefault()
+  const target = document.querySelector(e.target.getAttribute('href'))
+  target.style.display = null
+  target.removeAttribute('aria-hidden')
+  target.setAttribute('aria-modal', 'true')
+}
+
+document.querySelectorAll('.js-modal').forEach(a => {
+  a.addEventListener('click', openModal)
+
+})
+
+
+
+
+
+
+/*
+const openModal = function (e) {
+  if (e && e.target) {
+    e.preventDefault()
+    const target = e.target.getAttribute('href')
+    if (target) {
+      target.style.display = null
+      target.removeAttribute('aria-hidden')
+      target.setAttribute('aria-modal', 'true')
+    }
+  }
+}
+
+document.querySelectorAll('.js-modal').forEach(a => {
+  a.addEventListener('click', openModal)
+})*/
+
+
+
+
+/*
+
+
+function galerieModale() {
+  const modale = document.getElementById('modale-gallery');
+
+  // Récupération des éléments déclencheurs de la modale
+  const editBtns = document.querySelectorAll('.images figure figcaption');
+  const ajouterPhotoBtn = document.querySelector('.ajouter-photo a');
+  const supprimerGalerieBtn = document.querySelector('.supprimer-galerie a');
+
+  // Fonction pour ouvrir la modale
+  function openModal() {
+    modale.style.display = 'block';
+  }
+
+  // Fonction pour fermer la modale
+  function closeModal() {
+    modale.style.display = 'none';
+  }
+
+  // Ajout des événements pour ouvrir et fermer la modale
+  editBtns.forEach(editBtn => {
+    editBtn.addEventListener('click', openModal);
+  });
+  ajouterPhotoBtn.addEventListener('click', openModal);
+  supprimerGalerieBtn.addEventListener('click', openModal);
+  modale.addEventListener('click', (event) => {
+    // Si l'utilisateur clique à l'extérieur de la modale
+    if (event.target === modale) {
+      closeModal();
+    }
+  });
+}
+galerieModale();*/
+/*
+function openModal() {
+  document.getElementById("modale-gallery").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("modale-gallery").style.display = "none";
+}*/
 
 
