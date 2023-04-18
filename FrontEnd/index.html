@@ -19,7 +19,7 @@
 
 		<button class="mode-edition"><i class="fa-regular fa-pen-to-square"></i>Mode édition</button>
 
-		<button class="publication-changements">publier les changements</button>
+		<button class="publication-changements">Publier les changements</button>
 	</section>
 	<header>
 
@@ -56,14 +56,19 @@
 			</article>
 		</section>
 		<section id="portfolio">
-			<h2>Mes Projets</h2>
+			<h2>Mes Projets<a class="js-modal" href="#modal1"><i class="fa-regular fa-pen-to-square"></i>Modifier</a>
+			</h2>
 
-			<a href="#" onclick="modale()"><i class="fa-regular fa-pen-to-square"></i>Modifier</a>
 
-			<div id="modale-gallery">
+			<aside id="modal1" class="modal" aria-hidden="true" role="dialog" aria-modal="false"
+				aria-labelledby="titlemodal" style="display:none;">
 
-				<div class="travaux">
-					<h3>Galerie photo</h3>
+
+				<div class="modal-wrapper">
+
+					<a class="exit" href="#" onclick="modaleGallery()"><i class="fa-solid fa-xmark"></i></a>
+
+					<h3 id="titlemodal">Galerie photo</h3>
 					<div class="images">
 						<figure>
 							<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
@@ -113,12 +118,14 @@
 					</div>
 					<!--<a href="#" onclick="example()">Cliquez ici pour fermer la boîte</a>-->
 					<ul>
-						<li class="ajouter-photo"><a href="#" onclick="modaleGallery()">Ajouter une photo</a></li>
-						<li class="supprimer-galerie"><a href="#" onclick="modaleGallery()">Supprimer la galerie</a>
+						<li class="ajouter-photo"><a href="#" onclick="openModal()">Ajouter une photo</a></li>
+						<li class="supprimer-galerie"></li><a href="#" onclick="openModal()">Supprimer la galerie</a>
+						</li>
+
 						</li>
 					</ul>
 				</div>
-			</div>
+			</aside>
 
 
 			<div class="filters">
