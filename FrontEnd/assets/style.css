@@ -445,7 +445,7 @@ h3 {
 	color: #000000;
 }
 
-#modale-gallery {
+#modal1 {
 	/*visibility: hidden;*/
 	position: absolute;
 	/*left: 0;
@@ -457,9 +457,9 @@ h3 {
 
 }
 
-#modale-gallery .travaux {
-	width: 550px;
-	height: 660px;
+#modal1 .modal-wrapper {
+	width: 700px;
+	/*height: 660px;*/
 	margin: 100px auto;
 	background-color: #ffffff;
 	border-radius: 10px;
@@ -478,20 +478,37 @@ h3 {
 	-webkit-transform: translate(-50%, -50%);
 }
 
-.travaux h3 {
+#portfolio h2 a {
+	font-size: 12px;
+	padding-left: 10px;
+	text-decoration: none;
+	color: #000000;
+	font-weight: lighter;
+	/*visibility: hidden;*/
+}
+
+.exit {
+	color: #000000;
+	position: fixed;
+	top: 8;
+	right: 0;
+	padding-right: 20px;
+}
+
+.modal-wrapper h3 {
 	padding: 20px 0;
 }
 
-.travaux ul {
+.modal-wrapper ul {
 	padding-top: 40px;
 }
 
-.travaux ul li {
+.modal-wrapper ul li {
 
 	padding-bottom: 30px;
 }
 
-.travaux ul a {
+.modal-wrapper ul a {
 	text-decoration: none;
 	margin-bottom: 15px;
 }
@@ -505,7 +522,8 @@ h3 {
 	font-family: 'Syne';
 }
 
-.supprimer-galerie a {
+/*.supprimer-galerie*/
+a {
 	color: #D65353;
 	font-family: 'Syne';
 	font-weight: 400;
@@ -518,13 +536,14 @@ h3 {
 	align-items: center;
 	gap: 10px;
 	font-weight: 200;
-	border-bottom: 0.3px solid rgb(22, 22, 22);
-
+	border-bottom: 0.2px solid rgb(61, 61, 61);
+	margin: 0 80px;
 }
 
 .images figure {
 	width: 90px;
 }
+
 
 .images img {
 	width: 90px;
