@@ -64,61 +64,73 @@
 				aria-labelledby="titlemodal" style="display:none;">
 
 
-				<div class="modal-wrapper">
+				<div class="modal-wrapper js-modal-stop">
 
-					<a class="exit" href="#" onclick="modaleGallery()"><i class="fa-solid fa-xmark"></i></a>
+					<button class="exit"><i class="fa-solid fa-xmark"></i></button>
 
 					<h3 id="titlemodal">Galerie photo</h3>
 					<div class="images">
 						<figure>
 							<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
+							<i class="fa-solid fa-arrows-up-down-left-right"></i>
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/restaurant-sushisen-londres.png"
 								alt="Restaurant Sushisen - Londres">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 						<figure>
 							<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
+							<i class="fa-solid fa-basket-shopping"></i>
 							<figcaption>éditer</figcaption>
 						</figure>
 					</div>
-					<!--<a href="#" onclick="example()">Cliquez ici pour fermer la boîte</a>-->
+
 					<ul>
-						<li class="ajouter-photo"><a href="#" onclick="openModal()">Ajouter une photo</a></li>
+						<li class="ajouter-photo"><a href="#modal2">Ajouter une photo</a></li>
 						<li class="supprimer-galerie"></li><a href="#" onclick="openModal()">Supprimer la galerie</a>
 						</li>
 
@@ -126,6 +138,13 @@
 					</ul>
 				</div>
 			</aside>
+
+			<section id="modal2" class="modal" role="dialog" aria-hidden="true" aria-modal="false"
+				aria-labelledby="titlemodal" style="display:none;">
+				<h2>Ajout photo</h2>
+			</section>
+
+
 
 
 			<div class="filters">
