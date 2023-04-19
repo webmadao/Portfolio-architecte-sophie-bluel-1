@@ -552,3 +552,29 @@ a {
 .images figcaption {
 	text-align: left;
 }
+
+figure {
+	position: relative;
+}
+
+.fa-basket-shopping {
+	position: absolute;
+	top: 15px;
+	right: -5px;
+	transform: translate(-50%, -50%);
+	color: #ffffff;
+	background-color: #000000;
+	border-radius: 2px;
+	padding: 2px;
+}
+
+.fa-arrows-up-down-left-right {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	transform: translate(-50%, -50%);
+	color: #ffffff;
+	background-color: #000000;
+	border-radius: 2px;
+	padding: 2px;
+}
