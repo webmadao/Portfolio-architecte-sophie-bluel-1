@@ -276,6 +276,16 @@ article button {
 	margin-bottom: 0.5em;
 }
 
+.fa-pen-to-square {
+	color: #115044;
+}
+
+#introduction figure button {
+	background-color: inherit;
+	border: none;
+	margin: 10px 0 0 55px;
+}
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
@@ -471,7 +481,7 @@ h3 {
 	font-size: 15px;
 	border: 2px solid #e6e6e6;
 	position: absolute;
-	left: 50%;
+	left: 45%;
 	top: 100px;
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
@@ -496,6 +506,7 @@ h3 {
 	background-color: inherit;
 	border: none;
 	font-size: larger;
+	cursor: pointer;
 }
 
 .modal-wrapper h3 {
