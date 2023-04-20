@@ -15,12 +15,11 @@
 </head>
 
 <body>
-	<section class="top-edition">
-
+	<section class="top-edition" style="display: none;">
 		<button class="mode-edition"><i class="fa-regular fa-pen-to-square"></i>Mode édition</button>
-
 		<button class="publication-changements">Publier les changements</button>
 	</section>
+
 	<header>
 
 		<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
@@ -37,7 +36,9 @@
 	<main>
 		<section id="introduction">
 			<figure>
-				<img src="./assets/images/sophie-bluel.png" alt="">
+				<img src="./assets/images/sophie-bluel.png" alt=""><button class="modifier-image"><i
+						class="fa-regular fa-pen-to-square"></i>Modifier
+				</button>
 			</figure>
 
 			<article>
@@ -56,6 +57,7 @@
 			</article>
 		</section>
 		<section id="portfolio">
+			<!------------------------- Modal1 ------------------>
 			<h2>Mes Projets<a class="js-modal" href="#modal1"><i class="fa-regular fa-pen-to-square"></i>Modifier</a>
 			</h2>
 
@@ -138,7 +140,9 @@
 					</ul>
 				</div>
 			</aside>
+			<!------------------------- fin modal1 ------------->
 
+			<!-----------------------  debut modal2 -------------------->
 			<section id="modal2" class="modal" role="dialog" aria-hidden="true" aria-modal="false"
 				aria-labelledby="titlemodal" style="display:none;">
 
@@ -167,13 +171,9 @@
 				<div class="validation-photo">
 					<button class="validation">Validation</button>
 				</div>
-
-
-
 			</section>
 
-
-
+			<!-----------------------  Fin modal2 -------------------->
 
 			<div class="filters">
 				<button class="filter-tous" data-tous="all">Tous</button>
