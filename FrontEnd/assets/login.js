@@ -37,6 +37,9 @@ function handleLogin(event) {
             alert("Les informations d\'identification sont incorrectes");
         });
 
+
+
+
 }
 
 // Ajout d'un événement d'écouteur pour le bouton de connexion
@@ -44,3 +47,21 @@ const loginButton = document.querySelector('#login-button');
 loginButton.addEventListener('click', handleLogin);
 
 
+/*
+    // Vérifier si l'utilisateur est connecté
+    if (isLoggedIn()) {
+        // Afficher la modale
+        const modal = document.querySelector('#modal1');
+        modal.style.display = 'block';
+    } else {
+        // Cacher la modale
+        const modal = document.querySelector('#modal1');
+        modal.style.display = 'none';
+    }
+
+    // Fonction pour vérifier si l'utilisateur est connecté
+    function isLoggedIn() {
+        // Vérifier si le jeton JWT est présent dans le stockage local de l'utilisateur
+        const token = localStorage.getItem('jwt');
+        return token !== null;
+    }*/
