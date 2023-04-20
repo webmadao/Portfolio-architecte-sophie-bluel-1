@@ -4,14 +4,14 @@ function getWorks() {
   fetch('http://localhost:5678/api/works')
     .then(response => response.json()) // Récupérer les données au format JSON
     .then((data) => {
-      section(data); // Appeler la fonction section() pour afficher les données
+      getGallery(data); // Appeler la fonction section() pour afficher les données
       addFilterListeners(data); // Ajouter les listeners pour les filtres
 
     });
 }
 
 // Création de la galerie via le DOM
-function section(works) {
+function getGallery(works) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // Effacer le contenu de la galerie précédente
 
@@ -33,12 +33,13 @@ function section(works) {
   });
 }
 
+
 // Création des filtres
 function addFilterListeners(works) {
   const boutonTous = document.querySelector(".filter-tous");
 
   boutonTous.addEventListener("click", function () {
-    section(works); // Afficher tous les éléments
+    getGallery(works); // Afficher tous les éléments
   });
 
   const boutonObjets = document.querySelector(".filter-objets");
@@ -47,7 +48,7 @@ function addFilterListeners(works) {
     const filterObjects = works.filter(function (work) {
       return work.category.id === 1; // Filtrer les éléments par catégorie
     });
-    section(filterObjects); // Afficher les éléments filtrés
+    getGallery(filterObjects); // Afficher les éléments filtrés
   });
 
   const boutonAppartement = document.querySelector(".filter-appartements");
@@ -56,7 +57,7 @@ function addFilterListeners(works) {
     const filterAppartement = works.filter(function (work) {
       return work.category.id === 2;
     });
-    section(filterAppartement);
+    getGallery(filterAppartement);
   });
 
   const boutonHotelRestaurants = document.querySelector(".filter-hotel-restaurants");
@@ -65,7 +66,7 @@ function addFilterListeners(works) {
     const filterHotelRestaurants = works.filter(function (work) {
       return work.category.id === 3;
     });
-    section(filterHotelRestaurants);
+    getGallery(filterHotelRestaurants);
   });
 
   function openModal() {
@@ -82,86 +83,80 @@ function addFilterListeners(works) {
 
 getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
 
+
+/*---------------------ouvrir/fermé modal1*/
+let modal = null;
+
 const openModal = function (e) {
-  e.preventDefault()
-  const target = document.querySelector(e.target.getAttribute('href'))
-  target.style.display = null
-  target.removeAttribute('aria-hidden')
-  target.setAttribute('aria-modal', 'true')
+  e.preventDefault();
+  const target = document.querySelector(e.target.getAttribute('href'));
+  target.style.display = '';
+  target.removeAttribute('aria-hidden');
+  target.setAttribute('aria-modal', 'true');
+  modal = target;
+  modal.querySelector('.exit').addEventListener('click', closeModal);
+  modal.querySelector('.exit').addEventListener('click', stopPropagation);
+
+};
+
+const closeModal = function (e) {
+  if (modal === null) return;
+  e.preventDefault();
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  modal.removeAttribute('aria-modal');
+  modal.removeEventListener('click', closeModal);
+  modal.querySelector('.exit').removeEventListener('click', closeModal);
+  modal.querySelector('.js-modal-stop').removeEventListener('click', stopPropagation);
+  modal = null;
+  window.addEventListener('click', function (event) {
+    if (modal !== null && event.target === modal) {
+      closeModal(event);
+    }
+  });
+};
+
+const stopPropagation = function (e) {
+  e.stopPropagation()
 }
 
 document.querySelectorAll('.js-modal').forEach(a => {
-  a.addEventListener('click', openModal)
+  a.addEventListener('click', openModal);
+});
 
-})
-
-
-
+/*---------------------ouvrir/fermé modal1*/
 
 
+/*----------Ouvrir modal2 via modal1*/
+const modal1 = document.getElementById("modal1");
+const modal2 = document.getElementById("modal2");
+const ajouterPhoto = document.querySelector(".ajouter-photo a");
 
-/*
-const openModal = function (e) {
-  if (e && e.target) {
-    e.preventDefault()
-    const target = e.target.getAttribute('href')
-    if (target) {
-      target.style.display = null
-      target.removeAttribute('aria-hidden')
-      target.setAttribute('aria-modal', 'true')
-    }
-  }
-}
-
-document.querySelectorAll('.js-modal').forEach(a => {
-  a.addEventListener('click', openModal)
-})*/
+ajouterPhoto.addEventListener("click", function (event) {
+  event.preventDefault();
+  modal1.style.display = "none";
+  modal2.style.display = "block";
+});
+/*----------Ouvrir modal2 via modal1*/
 
 
 
 
-/*
 
 
-function galerieModale() {
-  const modale = document.getElementById('modale-gallery');
 
-  // Récupération des éléments déclencheurs de la modale
-  const editBtns = document.querySelectorAll('.images figure figcaption');
-  const ajouterPhotoBtn = document.querySelector('.ajouter-photo a');
-  const supprimerGalerieBtn = document.querySelector('.supprimer-galerie a');
 
-  // Fonction pour ouvrir la modale
-  function openModal() {
-    modale.style.display = 'block';
-  }
 
-  // Fonction pour fermer la modale
-  function closeModal() {
-    modale.style.display = 'none';
-  }
 
-  // Ajout des événements pour ouvrir et fermer la modale
-  editBtns.forEach(editBtn => {
-    editBtn.addEventListener('click', openModal);
-  });
-  ajouterPhotoBtn.addEventListener('click', openModal);
-  supprimerGalerieBtn.addEventListener('click', openModal);
-  modale.addEventListener('click', (event) => {
-    // Si l'utilisateur clique à l'extérieur de la modale
-    if (event.target === modale) {
-      closeModal();
-    }
-  });
-}
-galerieModale();*/
-/*
-function openModal() {
-  document.getElementById("modale-gallery").style.display = "block";
-}
 
-function closeModal() {
-  document.getElementById("modale-gallery").style.display = "none";
-}*/
+
+
+
+
+
+
+
+
+
 
 
