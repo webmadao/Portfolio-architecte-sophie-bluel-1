@@ -79,8 +79,6 @@ function addFilterListeners(works) {
     });
   }
 
-
-
 }
 
 getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
@@ -100,10 +98,10 @@ const backToModal1 = document.querySelector('.back');
 const ajouterPhoto = document.querySelector(".ajouter-photo a");
 const exitModal2 = document.querySelector(".exit2");
 // Vérifiez si l'utilisateur est connecté
-const handleLogin = true; 
+const handleLogin = true;
 
 // Masquez les éléments si l'utilisateur n'est pas connecté
-if (handleLogin) {
+if (handleLogin = true) {
   topEdition.style.display = 'block';
   modifierImageBtn.style.display = 'block';
   modeEditionBtns.forEach(btn => btn.style.display = 'block');
@@ -181,7 +179,7 @@ document.addEventListener('DOMContentLoaded', addEventListeners);
 // Fonction pour masquer ou afficher la section "top-edition"
 function toggleTopEdition() {
   const topEdition = document.querySelector('.top-edition');
-  const loggedIn = handleLogin(); 
+  const loggedIn = handleLogin();
   topEdition.style.display = loggedIn ? 'block' : 'none';
 }
 
