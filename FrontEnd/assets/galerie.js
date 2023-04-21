@@ -100,7 +100,7 @@ const backToModal1 = document.querySelector('.back');
 const ajouterPhoto = document.querySelector(".ajouter-photo a");
 const exitModal2 = document.querySelector(".exit2");
 // Vérifiez si l'utilisateur est connecté
-const handleLogin = true; // à remplacer par votre logique pour vérifier si l'utilisateur est connecté
+const handleLogin = true; 
 
 // Masquez les éléments si l'utilisateur n'est pas connecté
 if (handleLogin) {
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', addEventListeners);
 // Fonction pour masquer ou afficher la section "top-edition"
 function toggleTopEdition() {
   const topEdition = document.querySelector('.top-edition');
-  const loggedIn = handleLogin(); // Fonction isLoggedIn() à implémenter
+  const loggedIn = handleLogin(); 
   topEdition.style.display = loggedIn ? 'block' : 'none';
 }
 
