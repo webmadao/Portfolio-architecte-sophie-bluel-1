@@ -547,7 +547,7 @@ a {
 	font-weight: 400;
 }
 
-.images {
+.images-works {
 	padding: 20px;
 	display: flex;
 	flex-wrap: wrap;
@@ -558,16 +558,16 @@ a {
 	margin: 0 80px;
 }
 
-.images figure {
+.images-works figure {
 	width: 90px;
 }
 
 
-.images img {
+.images-works img {
 	width: 90px;
 }
 
-.images figcaption {
+.images-works figcaption {
 	text-align: left;
 }
 
