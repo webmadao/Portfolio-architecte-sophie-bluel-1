@@ -1,4 +1,4 @@
-"use strict"
+
 function handleLogin(event) {
     event.preventDefault(); // Empêche le formulaire de recharger la page
 
@@ -31,13 +31,15 @@ function handleLogin(event) {
         .then(data => {
             // Redirection vers la page d'accueil si les informations d'identification sont correctes
             window.location.href = 'index.html';
+            // Affichage du bouton de déconnexion et masquage du bouton de connexion
+
         })
         .catch(error => {
             // Affichage d'un message d'erreur si les informations d'identification sont incorrectes ou si une erreur inattendue s'est produite
             alert("Les informations d\'identification sont incorrectes");
         });
-
 }
+
 
 // Ajout d'un événement d'écouteur pour le bouton de connexion
 const loginButton = document.querySelector('#login-button');
