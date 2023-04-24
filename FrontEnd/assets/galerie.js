@@ -1,4 +1,22 @@
 "use strict"
+const topEdition = document.querySelector('.top-edition');
+const btnLogin = document.querySelector('.login-btn');
+const btnLogout = document.querySelector('.logout-btn');
+const modifierImageBtn = document.querySelector('.modifier-image');
+const modeEditionBtns = document.querySelectorAll('.mode-edition');
+const modal1Btn = document.querySelector('.js-modal');
+const ajouterPhotoBtn = document.querySelector('.ajouter-photo');
+const modal1 = document.querySelector('#modal1');
+const modalWrapper = document.querySelectorAll('.modal-wrapper');
+const exitBtns = document.querySelectorAll('.exit');
+const backToModal1 = document.querySelector('.back');
+const ajouterPhoto = document.querySelector(".ajouter-photo a");
+const exitModal2 = document.querySelector(".exit2");
+const modal2 = document.querySelector('#modal2');
+/*const modal1Works = document.querySelector('#images-works')*/
+// Vérifiez si l'utilisateur est connecté
+const handleLogin = true;
+
 // Faire appel à mon API avec fetch
 function getWorks() {
   fetch('http://localhost:5678/api/works')
@@ -6,7 +24,7 @@ function getWorks() {
     .then((data) => {
       getGallery(data); // Appeler la fonction section() pour afficher les données
       addFilterListeners(data); // Ajouter les listeners pour les filtres
-
+      addModal(data)
     });
 }
 
@@ -69,7 +87,7 @@ function addFilterListeners(works) {
     getGallery(filterHotelRestaurants);
   });
 
-  function openModal() {
+  /*function openModal() {
     const modaleGallery = document.getElementById("modale-gallery");
     modaleGallery.style.display = "block";
     const travaux = document.querySelector(".travaux");
@@ -77,7 +95,103 @@ function addFilterListeners(works) {
     travaux.addEventListener("click", function () {
       console.log("top");
     });
+  }*/
+
+
+
+  /*------------------ Gestion modal et ---------------------*/
+  if (handleLogin === true) {
+    topEdition.style.display = 'block';
+    modifierImageBtn.style.display = 'block';
+    modeEditionBtns.forEach(btn => btn.style.display = 'block');
+    modal1Btn.style.display = 'block';
+    document.getElementById('logout-btn').style.display = 'block';
+    document.getElementById('login-btn').style.display = 'none';
   }
+
+  // Affichez la modal1 lorsque le bouton modal est cliqué
+  modal1Btn.addEventListener('click', function (event) {
+    event.preventDefault();
+    modal1.style.display = 'block';
+  });
+
+  // Masquez la modal1 lorsque le bouton de sortie est cliqué ou lorsqu'on clique en dehors de la modal
+  exitBtns.forEach(btn => {
+    btn.addEventListener('click', function (event) {
+      event.preventDefault();
+      modal1.style.display = 'none';
+    });
+  });
+
+  modal1.addEventListener('click', function (event) {
+    if (event.target === modalWrapper[0]) {
+      hideModal1();
+    }
+  });
+
+
+  // Événements pour supprimer une figure
+  const figures = document.querySelectorAll('.images figure');
+  figures.forEach(figure => {
+    figure.addEventListener('click', event => {
+      if (event.target.classList.contains('img')) {
+        deleteFigure(figure);
+      }
+    });
+  });
+  // Événement pour ouvrir la modal2
+
+  ajouterPhoto.addEventListener("click", function (event) {
+    event.preventDefault();
+    modal1.style.display = "none";
+    modal2.style.display = "block";
+  });
+  // Evénemen pour retourner à la modal1
+  backToModal1.addEventListener('click', function (event) {
+    event.preventDefault();
+    modal2.style.display = "none";
+    modal1.style.display = "block";
+  })
+
+  // Événement pour masquer la modal2
+  exitModal2.addEventListener("click", function (event) {
+    event.preventDefault()
+    modal2.style.display = "none";
+  })
+  // Changement login en logout à la connection
+  if (handleLogin === response.ok) {
+    btnLogin.addEventListener('click', function (event) {
+      btnLogin.display.style = 'none';
+    })
+  }
+
+  /*window.addEventListener("click", function (event) {
+    event.preventDefault();
+    modal1.style.display = "none";
+    modal2.style.display = "none";
+  })*/
+
+
+  modal2.addEventListener('click', event => {
+    if (event.target === modal2 || event.target.classList.contains('exit2')) {
+      hideModal2();
+    }
+  });
+
+  // Événement pour retourner à la modal1 depuis la modal2
+  const backToModal1Button = document.querySelector('.back');
+  backToModal1Button.addEventListener('click', showModal1);
+
+  // Appel de la fonction addEventListeners() une fois que le DOM est chargé
+  document.addEventListener('DOMContentLoaded', addEventListeners);
+
+  // Fonction pour masquer ou afficher la section "top-edition"
+  function toggleTopEdition() {
+    const topEdition = document.querySelector('.top-edition');
+    const loggedIn = handleLogin();
+    topEdition.style.display = loggedIn ? 'block' : 'none';
+  }
+
 
 }
 
@@ -86,102 +200,46 @@ getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les fil
 
 
 // Sélectionnez les éléments à masquer
-const topEdition = document.querySelector('.top-edition');
-const modifierImageBtn = document.querySelector('.modifier-image');
-const modeEditionBtns = document.querySelectorAll('.mode-edition');
-const modal1Btn = document.querySelector('.js-modal');
-const ajouterPhotoBtn = document.querySelector('.ajouter-photo');
-const modal1 = document.querySelector('#modal1');
-const modalWrapper = document.querySelectorAll('.modal-wrapper');
-const exitBtns = document.querySelectorAll('.exit');
-const backToModal1 = document.querySelector('.back');
-const ajouterPhoto = document.querySelector(".ajouter-photo a");
-const exitModal2 = document.querySelector(".exit2");
-// Vérifiez si l'utilisateur est connecté
-const handleLogin = true;
+/*------------------galerie modal--------*/
+/*function getWorks() {
+  fetch('http://localhost:5678/api/works')
+    .then(response => response.json()) // Récupérer les données au format JSON
+    .then((data) => {
+
+      addModal(data)
+    });
+}
+
+function addModal(works) {
+  const modal1Works = document.querySelector('#images-works');
+  modal1Works.innerHTML = ''; // Effacer le contenu de la galerie précédente
+
+  works.forEach(work => {
+    const workModal = document.createElement('div');
+    workModal.classList.add('gallery-item');
+
+    const modal1Image = document.createElement('img');
+    modal1Image.src = work.imageUrl;
+    modal1Image.alt = work.title;
+
+    const modalTitle = document.createElement('h3');
+    modalTitle.innerText = work.title;
+
+    workModal.appendChild(modal1Image);
+    workModal.appendChild(modalTitle);
+
+    modal1Works.appendChild(workModal); // Ajouter chaque élément à la galerie
+  });
+}
+
+
 
 // Masquez les éléments si l'utilisateur n'est pas connecté
-if (handleLogin = true) {
-  topEdition.style.display = 'block';
-  modifierImageBtn.style.display = 'block';
-  modeEditionBtns.forEach(btn => btn.style.display = 'block');
-  modal1Btn.style.display = 'block';
-}
 
-// Affichez la modal1 lorsque le bouton modal est cliqué
-modal1Btn.addEventListener('click', function (event) {
-  event.preventDefault();
-  modal1.style.display = 'block';
-});
 
-// Masquez la modal1 lorsque le bouton de sortie est cliqué ou lorsqu'on clique en dehors de la modal
-exitBtns.forEach(btn => {
-  btn.addEventListener('click', function (event) {
-    event.preventDefault();
-    modal1.style.display = 'none';
-  });
-});
 
-modal1.addEventListener('click', function (event) {
-  if (event.target === modalWrapper[0]) {
-    hideModal1();
-  }
-});
 
-// Événements pour supprimer une figure
-const figures = document.querySelectorAll('.images figure');
-figures.forEach(figure => {
-  figure.addEventListener('click', event => {
-    if (event.target.classList.contains('img')) {
-      deleteFigure(figure);
-    }
-  });
-});
-// Événement pour ouvrir la modal2
-ajouterPhoto.addEventListener("click", function (event) {
-  event.preventDefault();
-  modal1.style.display = "none";
-  modal2.style.display = "block";
-});
-// Evénemen pour retourner à la modal1
-backToModal1.addEventListener('click', function (event) {
-  event.preventDefault();
-  modal2.style.display = "none";
-  modal1.style.display = "block";
-})
 
-// Événement pour masquer la modal2
-exitModal2.addEventListener("click", function (event) {
-  event.preventDefault
-  modal2.style.display = "none";
-})
-
-/*window.addEventListener("click", function (event) {
-  event.preventDefault();
-  modal1.style.display = "none";
-  modal2.style.display = "none";
-})*/
-
-const modal2 = document.querySelector('#modal2');
-modal2.addEventListener('click', event => {
-  if (event.target === modal2 || event.target.classList.contains('exit2')) {
-    hideModal2();
-  }
-});
-
-// Événement pour retourner à la modal1 depuis la modal2
-const backToModal1Button = document.querySelector('.back');
-backToModal1Button.addEventListener('click', showModal1);
-
-// Appel de la fonction addEventListeners() une fois que le DOM est chargé
-document.addEventListener('DOMContentLoaded', addEventListeners);
-
-// Fonction pour masquer ou afficher la section "top-edition"
-function toggleTopEdition() {
-  const topEdition = document.querySelector('.top-edition');
-  const loggedIn = handleLogin();
-  topEdition.style.display = loggedIn ? 'block' : 'none';
-}
 
 
 
