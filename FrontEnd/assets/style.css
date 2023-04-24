@@ -472,7 +472,7 @@ h3 {
 }
 
 #modal1 .modal-wrapper {
-	width: 500px;
+	width: 550px;
 	/*height: 660px;*/
 	margin: 100px auto;
 	background-color: #ffffff;
@@ -549,7 +549,7 @@ a {
 
 
 .images-works {
-	padding: 0;
+	padding: 20px;
 	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
