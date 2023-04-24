@@ -99,7 +99,7 @@ function addFilterListeners(works) {
 
 
 
-  /*------------------ Gestion modal et ---------------------*/
+  /*------------------ Gestion modal1 et 2  ---------------------*/
   if (handleLogin === true) {
     topEdition.style.display = 'block';
     modifierImageBtn.style.display = 'block';
@@ -128,6 +128,56 @@ function addFilterListeners(works) {
       hideModal1();
     }
   });
+
+
+
+
+
+
+
+
+
+
+  // Afficher galerie modal1
+  const modal1Works = document.querySelector('.images-works');
+  modal1Works.innerHTML = '';
+
+  fetch('http://localhost:5678/api/works')
+    .then(response => response.json())
+    .then(data => {
+      console.log(data); // affiche la réponse de l'API dans la console
+      data.forEach(work => {
+        const workDiv = document.createElement('div');
+        workDiv.classList.add('gallery-works');
+
+        const image = document.createElement('img');
+        image.src = work.imageUrl;
+        image.alt = work.title;
+
+        const title = document.createElement('h4');
+        title.innerText = "éditer";
+
+        workDiv.appendChild(image);
+        workDiv.appendChild(title);
+        modal1Works.appendChild(workDiv);
+      });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // Événements pour supprimer une figure
