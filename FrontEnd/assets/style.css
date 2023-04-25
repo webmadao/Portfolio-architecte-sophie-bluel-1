@@ -152,6 +152,7 @@ body {
 	background-color: rgb(0, 0, 0);
 	width: 100%;
 	gap: 10px;
+
 }
 
 
@@ -222,7 +223,10 @@ h2 {
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 30px;
-	color: #1D6154
+	color: #1D6154;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 nav ul {
@@ -585,10 +589,11 @@ figure {
 }
 
 */
-.fa-basket-shopping {
+
+.i {
 	position: absolute;
-	top: 15px;
-	right: -5px;
+	top: 10px;
+	right: 0px;
 	transform: translate(-50%, -50%);
 	color: #ffffff;
 	background-color: #000000;
@@ -596,7 +601,7 @@ figure {
 	padding: 2px;
 }
 
-.fa-arrows-up-down-left-right {
+*/ .fa-arrows-up-down-left-right {
 	position: absolute;
 	top: 15px;
 	right: 20px;
