@@ -87,21 +87,10 @@ function addFilterListeners(works) {
     getGallery(filterHotelRestaurants);
   });
 
-  /*function openModal() {
-    const modaleGallery = document.getElementById("modale-gallery");
-    modaleGallery.style.display = "block";
-    const travaux = document.querySelector(".travaux");
-    travaux.classList.add("open");
-    travaux.addEventListener("click", function () {
-      console.log("top");
-    });
-  }*/
-
-
-
+  
   /*------------------ Gestion modal1 et 2  ---------------------*/
   if (handleLogin === true) {
-    topEdition.style.display = 'block';
+    topEdition.style.visibility = 'visible';
     modifierImageBtn.style.display = 'block';
     modeEditionBtns.forEach(btn => btn.style.display = 'block');
     modal1Btn.style.display = 'block';
@@ -129,16 +118,7 @@ function addFilterListeners(works) {
     }
   });
 
-
-
-
-
-
-
-
-
-
-  // Afficher galerie modal1
+  //--Afficher galerie dans modal1
   const modal1Works = document.querySelector('.images-works');
   modal1Works.innerHTML = '';
 
@@ -149,6 +129,7 @@ function addFilterListeners(works) {
       data.forEach(work => {
         const workDiv = document.createElement('div');
         workDiv.classList.add('gallery-works');
+        workDiv.dataset.id = work._id;
 
         const image = document.createElement('img');
         image.src = work.imageUrl;
@@ -157,38 +138,36 @@ function addFilterListeners(works) {
         const title = document.createElement('h4');
         title.innerText = "éditer";
 
+        const deleteIcon = document.createElement('i');
+        deleteIcon.classList.add('fa-solid', 'fa-trash-can');
+
         workDiv.appendChild(image);
         workDiv.appendChild(title);
+        workDiv.appendChild(deleteIcon);
         modal1Works.appendChild(workDiv);
+      });
+      // Supprimé work au click
+      modal1Works.addEventListener('click', function (event) {
+        if (event.target.tagName === 'i') {
+          const workDiv = event.target.closest('.gallery-works');
+          const workId = workDiv.dataset.id;
+          fetch(`http://localhost:5678/api/works/${workId}`, {
+            method: 'DELETE',
+          })
+            .then(response => {
+              if (response.ok) {
+                workDiv.remove(); // Supprime le travail de la galerie
+              } else {
+                throw new Error('Erreur de suppression');
+              }
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
       });
     });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // Événements pour supprimer une figure
-  const figures = document.querySelectorAll('.images figure');
-  figures.forEach(figure => {
-    figure.addEventListener('click', event => {
-      if (event.target.classList.contains('img')) {
-        deleteFigure(figure);
-      }
-    });
-  });
   // Événement pour ouvrir la modal2
 
   ajouterPhoto.addEventListener("click", function (event) {
@@ -215,13 +194,7 @@ function addFilterListeners(works) {
     })
   }
 
-  /*window.addEventListener("click", function (event) {
-    event.preventDefault();
-    modal1.style.display = "none";
-    modal2.style.display = "none";
-  })*/
-
-
+  
   modal2.addEventListener('click', event => {
     if (event.target === modal2 || event.target.classList.contains('exit2')) {
       hideModal2();
@@ -242,10 +215,142 @@ function addFilterListeners(works) {
     topEdition.style.display = loggedIn ? 'block' : 'none';
   }
 
+ 
+
+
 
 }
 
 getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
+
+
+const photoInput = document.getElementById("photo-input");
+const newImage = document.getElementById("new-image");
+
+photoInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      newImage.src = reader.result;
+    };
+  }
+});
+
+const validationButton = document.querySelector(".validation");
+const titreInput = document.querySelector("#modal2 input[type=text]");
+const categorieSelect = document.querySelector("#modal2 select");
+
+validationButton.addEventListener("click", () => {
+  const formData = new FormData();
+  formData.append("titre", titreInput.value);
+  formData.append("categorie", categorieSelect.value);
+  formData.append("photo", photoInput.files[0]);
+  
+  fetch("http://localhost:5678/api/works", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => {
+    if (response.ok) {
+      // traiter la réussite
+    } else {
+      throw new Error("La réponse du réseau n'était pas correcte");
+    }
+  })
+  .catch(error => {
+    // traiter l'erreur
+  });
+});
+
+
+
+
+/*window.addEventListener("click", function (event) {
+    event.preventDefault();
+    modal1.style.display = "none";
+    modal2.style.display = "none";
+  })*/
+
+
+/*function openModal() {
+    const modaleGallery = document.getElementById("modale-gallery");
+    modaleGallery.style.display = "block";
+    const travaux = document.querySelector(".travaux");
+    travaux.classList.add("open");
+    travaux.addEventListener("click", function () {
+      console.log("top");
+    });
+  }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
+    // Suppression de travaux
+    modal1Works.addEventListener('click', function (event) {
+      if (event.target.tagName === 'img') {
+        const workDiv = event.target.parentElement;
+        const workId = workDiv.dataset.id;
+   
+        fetch(`http://localhost:5678/api/works/${workId}`, {
+          method: 'DELETE',
+        })
+          .then(response => {
+            if (response.ok) {
+              workDiv.remove(); // Supprime le travail de la galerie
+            } else {
+              throw new Error('Erreur de suppression');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
+    });*/
+
+
+
+/*
+
+  // Événements pour supprimer une figure
+  const figures = document.querySelectorAll('.images figure');
+  figures.forEach(figure => {
+    figure.addEventListener('click', event => {
+      if (event.target.classList.contains('img')) {
+        deleteFigure(figure);
+      }
+    });
+  });*/
+
+
+
+
+
 
 
 
