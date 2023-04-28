@@ -14,6 +14,7 @@ const ajouterPhoto = document.querySelector(".ajouter-photo a");
 const exitModal2 = document.querySelector(".exit2");
 const modal2 = document.querySelector('#modal2');
 /*const modal1Works = document.querySelector('#images-works')*/
+
 // Vérifiez si l'utilisateur est connecté
 const handleLogin = true;
 
@@ -89,6 +90,7 @@ function addFilterListeners(works) {
 
   
   /*------------------ Gestion modal1 et 2  ---------------------*/
+
   if (handleLogin === true) {
     topEdition.style.visibility = 'visible';
     modifierImageBtn.style.display = 'block';
@@ -118,7 +120,7 @@ function addFilterListeners(works) {
     }
   });
 
-  //--Afficher galerie dans modal1
+  //Afficher galerie dans modal1
   const modal1Works = document.querySelector('.images-works');
   modal1Works.innerHTML = '';
 
@@ -146,12 +148,13 @@ function addFilterListeners(works) {
         workDiv.appendChild(deleteIcon);
         modal1Works.appendChild(workDiv);
       });
+
       // Supprimé work au click
       modal1Works.addEventListener('click', function (event) {
         if (event.target.tagName === 'i') {
           const workDiv = event.target.closest('.gallery-works');
           const workId = workDiv.dataset.id;
-          fetch(`http://localhost:5678/api/works/${workId}`, {
+          fetch('http://localhost:5678/api/works/1', {
             method: 'DELETE',
           })
             .then(response => {
@@ -175,6 +178,7 @@ function addFilterListeners(works) {
     modal1.style.display = "none";
     modal2.style.display = "block";
   });
+
   // Evénemen pour retourner à la modal1
   backToModal1.addEventListener('click', function (event) {
     event.preventDefault();
@@ -187,6 +191,7 @@ function addFilterListeners(works) {
     event.preventDefault()
     modal2.style.display = "none";
   })
+
   // Changement login en logout à la connection
   if (handleLogin === response.ok) {
     btnLogin.addEventListener('click', function (event) {
@@ -194,7 +199,6 @@ function addFilterListeners(works) {
     })
   }
 
-  
   modal2.addEventListener('click', event => {
     if (event.target === modal2 || event.target.classList.contains('exit2')) {
       hideModal2();
@@ -215,15 +219,13 @@ function addFilterListeners(works) {
     topEdition.style.display = loggedIn ? 'block' : 'none';
   }
 
- 
-
-
 
 }
 
 getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
 
 
+// Recupération image dans dossier
 const photoInput = document.getElementById("photo-input");
 const newImage = document.getElementById("new-image");
 
@@ -238,6 +240,7 @@ photoInput.addEventListener("change", (event) => {
   }
 });
 
+//Envoi à l'API
 const validationButton = document.querySelector(".validation");
 const titreInput = document.querySelector("#modal2 input[type=text]");
 const categorieSelect = document.querySelector("#modal2 select");
@@ -248,7 +251,7 @@ validationButton.addEventListener("click", () => {
   formData.append("categorie", categorieSelect.value);
   formData.append("photo", photoInput.files[0]);
   
-  fetch("http://localhost:5678/api/works", {
+  fetch('http://localhost:5678/api/works', {
     method: "POST",
     body: formData
   })
@@ -261,8 +264,25 @@ validationButton.addEventListener("click", () => {
   })
   .catch(error => {
     // traiter l'erreur
+
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
