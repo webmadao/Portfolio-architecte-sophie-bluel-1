@@ -1,4 +1,4 @@
-
+"use strict"
 function handleLogin(event) {
     event.preventDefault(); // Empêche le formulaire de recharger la page
 
@@ -44,4 +44,3 @@ function handleLogin(event) {
 // Ajout d'un événement d'écouteur pour le bouton de connexion
 const loginButton = document.querySelector('#login-button');
 loginButton.addEventListener('click', handleLogin);
-
