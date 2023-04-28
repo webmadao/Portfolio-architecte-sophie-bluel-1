@@ -568,7 +568,6 @@ a {
 .gallery-works {
 	display: flex;
 	flex-direction: column;
-
 }
 
 .images-works figure {
@@ -585,13 +584,38 @@ a {
 	font-size: 10px;
 }
 
-/*
-figure {
+.fa-trash-can {
 	position: relative;
+	bottom: 125px;
+	left: 30px;
+	color: white;
+	background-color: black;
+	padding: 3px;
+	margin: 0 35px;
+	border-radius: 2px;
 }
 
-*/
 
+.fa-arrows-up-down-left-right {
+	color: white;
+	position: relative;
+	top: 27px;
+	left: 5px;
+	background-color: black;
+	padding: 3px;
+	margin: 0 35px;
+	border-radius: 2px
+}
+
+
+/*
+.fa-trash-can {
+	color: white;
+	background-color: #000000;
+	padding: 5px;
+}*/
+
+/*
 .i {
 	position: absolute;
 	top: 10px;
@@ -601,9 +625,9 @@ figure {
 	background-color: #000000;
 	border-radius: 2px;
 	padding: 2px;
-}
+}*/
 
-*/ .fa-arrows-up-down-left-right {
+/* .fa-arrows-up-down-left-right {
 	position: absolute;
 	top: 15px;
 	right: 20px;
@@ -612,7 +636,7 @@ figure {
 	background-color: #000000;
 	border-radius: 2px;
 	padding: 2px;
-}
+}*/
 
 /*--------------------modal 2*/
 
@@ -629,7 +653,7 @@ figure {
 	font-size: 15px;
 	border: 2px solid #e6e6e6;
 	position: absolute;
-	left: 600px;
+	left: 680px;
 	top: 850px;
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
