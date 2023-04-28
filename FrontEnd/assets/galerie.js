@@ -106,6 +106,7 @@ function addFilterListeners(works) {
     modal1.style.display = 'block';
   });
 
+  
   // Masquez la modal1 lorsque le bouton de sortie est cliqué ou lorsqu'on clique en dehors de la modal
   exitBtns.forEach(btn => {
     btn.addEventListener('click', function (event) {
@@ -120,38 +121,57 @@ function addFilterListeners(works) {
     }
   });
 
+
   //Afficher galerie dans modal1
   const modal1Works = document.querySelector('.images-works');
   modal1Works.innerHTML = '';
-
   fetch('http://localhost:5678/api/works')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data); // affiche la réponse de l'API dans la console
-      data.forEach(work => {
-        const workDiv = document.createElement('div');
-        workDiv.classList.add('gallery-works');
-        workDiv.dataset.id = work._id;
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); // affiche la réponse de l'API dans la console
+    data.forEach((work, index) => {
+      const workDiv = document.createElement('div');
+      workDiv.classList.add('gallery-works');
+      workDiv.dataset.id = work._id;
 
-        const image = document.createElement('img');
-        image.src = work.imageUrl;
-        image.alt = work.title;
+      const image = document.createElement('img');
+      image.src = work.imageUrl;
+      image.alt = work.title;
 
-        const title = document.createElement('h4');
-        title.innerText = "éditer";
+      const title = document.createElement('h4');
+      title.innerText = "éditer";
 
-        const deleteIcon = document.createElement('i');
-        deleteIcon.classList.add('fa-solid', 'fa-trash-can');
+      const deleteIcon = document.createElement('i');
+      deleteIcon.classList.add('fa-solid', 'fa-trash-can');
+      /*deleteIcon.style.position = 'relative';
+      deleteIcon.style.bottom = '125px';
+      deleteIcon.style.left = '30px';
+      deleteIcon.style.color ='white';
+     deleteIcon.style.backgroundColor = 'black';
+      deleteIcon.style.padding = '5px -15px';*/
 
-        workDiv.appendChild(image);
-        workDiv.appendChild(title);
-        workDiv.appendChild(deleteIcon);
-        modal1Works.appendChild(workDiv);
-      });
+      workDiv.appendChild(image);
+      workDiv.appendChild(title);
+
+      // Vérifier si nous sommes en train de créer le premier élément de la galerie
+    if (index === 0) {
+        const arrowsIcon = document.createElement('i');
+        arrowsIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
+        image.parentNode.insertBefore(arrowsIcon, image);
+       /*arrowsIcon.style.bottom = '100px';
+        arrowsIcon.style.left = '50px';
+        arrowsIcon.style.color ='blue';*/
+      }
+
+      workDiv.appendChild(deleteIcon);
+      modal1Works.appendChild(workDiv);
+    });
+  });
+
 
       // Supprimé work au click
       modal1Works.addEventListener('click', function (event) {
-        if (event.target.tagName === 'i') {
+        if (event.target.deleteIcon === 'i') {
           const workDiv = event.target.closest('.gallery-works');
           const workId = workDiv.dataset.id;
           fetch('http://localhost:5678/api/works/1', {
@@ -169,15 +189,16 @@ function addFilterListeners(works) {
             });
         }
       });
-    });
+   
+
 
   // Événement pour ouvrir la modal2
-
   ajouterPhoto.addEventListener("click", function (event) {
     event.preventDefault();
     modal1.style.display = "none";
     modal2.style.display = "block";
   });
+
 
   // Evénemen pour retourner à la modal1
   backToModal1.addEventListener('click', function (event) {
@@ -186,11 +207,13 @@ function addFilterListeners(works) {
     modal1.style.display = "block";
   })
 
+
   // Événement pour masquer la modal2
   exitModal2.addEventListener("click", function (event) {
     event.preventDefault()
     modal2.style.display = "none";
   })
+
 
   // Changement login en logout à la connection
   if (handleLogin === response.ok) {
@@ -205,12 +228,15 @@ function addFilterListeners(works) {
     }
   });
 
+
   // Événement pour retourner à la modal1 depuis la modal2
   const backToModal1Button = document.querySelector('.back');
   backToModal1Button.addEventListener('click', showModal1);
 
+
   // Appel de la fonction addEventListeners() une fois que le DOM est chargé
   document.addEventListener('DOMContentLoaded', addEventListeners);
+
 
   // Fonction pour masquer ou afficher la section "top-edition"
   function toggleTopEdition() {
@@ -239,6 +265,7 @@ photoInput.addEventListener("change", (event) => {
     };
   }
 });
+
 
 //Envoi à l'API
 const validationButton = document.querySelector(".validation");
