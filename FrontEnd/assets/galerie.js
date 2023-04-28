@@ -26,7 +26,12 @@ function getWorks() {
       getGallery(data); // Appeler la fonction section() pour afficher les données
       addFilterListeners(data); // Ajouter les listeners pour les filtres
       addModal(data)
-    });
+    })
+   /* .catch(error => {
+      // traiter l'erreur
+  alert('erreur');
+    });*/
+  
 }
 
 // Création de la galerie via le DOM
@@ -88,7 +93,7 @@ function addFilterListeners(works) {
     getGallery(filterHotelRestaurants);
   });
 
-  
+ 
   /*------------------ Gestion modal1 et 2  ---------------------*/
 
   if (handleLogin === true) {
@@ -244,7 +249,7 @@ function addFilterListeners(works) {
     const loggedIn = handleLogin();
     topEdition.style.display = loggedIn ? 'block' : 'none';
   }
-
+  
 
 }
 
