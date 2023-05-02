@@ -13,6 +13,8 @@ const backToModal1 = document.querySelector('.back');
 const ajouterPhoto = document.querySelector(".ajouter-photo a");
 const exitModal2 = document.querySelector(".exit2");
 const modal2 = document.querySelector('#modal2');
+const token = localStorage.getItem('token');
+
 /*const modal1Works = document.querySelector('#images-works')*/
 
 // Vérifiez si l'utilisateur est connecté
@@ -25,7 +27,7 @@ function getWorks() {
     .then((data) => {
       getGallery(data); // Appeler la fonction section() pour afficher les données
       addFilterListeners(data); // Ajouter les listeners pour les filtres
-      addModal(data)
+      
     })
    /* .catch(error => {
       // traiter l'erreur
@@ -95,7 +97,7 @@ function addFilterListeners(works) {
 
  
   /*------------------ Gestion modal1 et 2  ---------------------*/
-
+  
   if (handleLogin === true) {
     topEdition.style.visibility = 'visible';
     modifierImageBtn.style.display = 'block';
@@ -104,7 +106,7 @@ function addFilterListeners(works) {
     document.getElementById('logout-btn').style.display = 'block';
     document.getElementById('login-btn').style.display = 'none';
   }
-
+  
   // Affichez la modal1 lorsque le bouton modal est cliqué
   modal1Btn.addEventListener('click', function (event) {
     event.preventDefault();
@@ -127,10 +129,13 @@ function addFilterListeners(works) {
   });
 
 
+
+
   //Afficher galerie dans modal1
   const modal1Works = document.querySelector('.images-works');
-  modal1Works.innerHTML = '';
-  fetch('http://localhost:5678/api/works')
+modal1Works.innerHTML = '';
+
+fetch('http://localhost:5678/api/works')
   .then(response => response.json())
   .then(data => {
     console.log(data); // affiche la réponse de l'API dans la console
@@ -159,43 +164,45 @@ function addFilterListeners(works) {
       workDiv.appendChild(title);
 
       // Vérifier si nous sommes en train de créer le premier élément de la galerie
-    if (index === 0) {
+      if (index === 0) {
         const arrowsIcon = document.createElement('i');
         arrowsIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
         image.parentNode.insertBefore(arrowsIcon, image);
-       /*arrowsIcon.style.bottom = '100px';
+        /*arrowsIcon.style.bottom = '100px';
         arrowsIcon.style.left = '50px';
         arrowsIcon.style.color ='blue';*/
       }
 
       workDiv.appendChild(deleteIcon);
       modal1Works.appendChild(workDiv);
-    });
-  });
 
-
-      // Supprimé work au click
-      modal1Works.addEventListener('click', function (event) {
-        if (event.target.deleteIcon === 'i') {
+      // Supprimer work au clic sur l'icône de suppression
+      
+      deleteIcon.addEventListener('click', function (event) {
+        if (event.target === deleteIcon) {
           const workDiv = event.target.closest('.gallery-works');
           const workId = workDiv.dataset.id;
-          fetch('http://localhost:5678/api/works/1', {
+ 
+          fetch('http://localhost:5678/api/works/' + workId, {
             method: 'DELETE',
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem('token')}`
+            }
           })
-            .then(response => {
-              if (response.ok) {
-                workDiv.remove(); // Supprime le travail de la galerie
-              } else {
-                throw new Error('Erreur de suppression');
-              }
-            })
-            .catch(error => {
-              console.error(error);
-            });
+          .then(response => {
+            if (response.ok) {
+              workDiv.remove(); // Supprime le travail de la galerie
+            } else {
+              throw new Error('Erreur de suppression');
+            }
+          })
+          .catch(error => {
+            console.error(error);
+          });
         }
       });
-   
-
+    });
+  });
 
   // Événement pour ouvrir la modal2
   ajouterPhoto.addEventListener("click", function (event) {
@@ -221,7 +228,8 @@ function addFilterListeners(works) {
 
 
   // Changement login en logout à la connection
-  if (handleLogin === response.ok) {
+  
+  if (localStorage.getItem('token')) {
     btnLogin.addEventListener('click', function (event) {
       btnLogin.display.style = 'none';
     })
@@ -235,12 +243,12 @@ function addFilterListeners(works) {
 
 
   // Événement pour retourner à la modal1 depuis la modal2
-  const backToModal1Button = document.querySelector('.back');
-  backToModal1Button.addEventListener('click', showModal1);
+  /*const backToModal1Button = document.querySelector('.back');
+  backToModal1Button.addEventListener('click', showModal);*/
 
 
   // Appel de la fonction addEventListeners() une fois que le DOM est chargé
-  document.addEventListener('DOMContentLoaded', addEventListeners);
+  /*document.addEventListener('DOMContentLoaded', addEventListeners);*/
 
 
   // Fonction pour masquer ou afficher la section "top-edition"
@@ -259,7 +267,7 @@ getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les fil
 // Recupération image dans dossier
 const photoInput = document.getElementById("photo-input");
 const newImage = document.getElementById("new-image");
-
+ 
 photoInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (file) {
@@ -267,6 +275,8 @@ photoInput.addEventListener("change", (event) => {
     reader.readAsDataURL(file);
     reader.onload = () => {
       newImage.src = reader.result;
+      newImage.style.width = '200px';
+      photoInput.style.display = 'none';
     };
   }
 });
@@ -303,10 +313,90 @@ validationButton.addEventListener("click", () => {
 
 
 
+ 
+      
 
 
 
 
+
+
+
+
+
+
+
+
+
+/*
+  const modal1Works = document.querySelector('.images-works');
+  modal1Works.innerHTML = '';
+
+  fetch("http://localhost:5678/api/works")
+  .then(function (response) {
+      if (response.ok) {
+          return response.json();
+      }
+      else {
+          throw new Error('Erreur lors de la récupération des travaux :');
+      }
+  })
+  .then(function (data) {
+      const gallery = document.createElement("div");
+      gallery.classList.add("gallery");
+
+      data.forEach((work, index) => {
+          let figure = document.createElement("figure");
+
+          let img = document.createElement("img");
+          img.src = work.imageUrl;
+          img.crossOrigin = "anonymous";
+          figure.appendChild(img);
+
+          // Ajouter une légende avec le mot "éditer"
+          let figcaption = document.createElement("figcaption");
+          let editLink = document.createTextNode("éditer");
+          figcaption.appendChild(editLink);
+          figure.appendChild(figcaption);
+
+          // Ajouter un bouton de suppression avec une icône trash
+          let deleteButton = document.createElement("button");
+          deleteButton.classList.add("delete-button");
+          deleteButton.innerHTML = '<i class="fa fa-trash-can"></i>';
+          deleteButton.addEventListener("click", () => {
+              // Récupérer l'id du travail à supprimer
+              const workId = work.id;
+
+              // Envoyer la requête DELETE au serveur afin de supprimer un travail
+              fetch(`http://localhost:5678/api/works/${workId}`, {
+                  method: "DELETE",
+                  headers: {
+                      "Authorization": `Bearer ${sessionStorage.getItem('token')}`
+                  }
+              })
+                  .then(response => {
+                      if (response.ok) {
+                          // Supprimer l'élément de la page une fois la suppression réussie
+                          figure.remove();
+                          console.log(`Le travail avec l'id ${workId} a été supprimé.`);
+                      } else {
+                          throw new Error("Erreur lors de la suppression du travail.");
+                      }
+                  })
+                  .catch(error => {
+                      console.error(error);
+                  });
+          });
+
+          figcaption.appendChild(deleteButton);
+
+        }); // Ajout du point-virgule ici
+      });
+
+
+
+
+*/
 
 
 
