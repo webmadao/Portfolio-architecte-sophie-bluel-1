@@ -13,30 +13,33 @@ const backToModal1 = document.querySelector('.back');
 const ajouterPhoto = document.querySelector(".ajouter-photo a");
 const exitModal2 = document.querySelector(".exit2");
 const modal2 = document.querySelector('#modal2');
-const token = localStorage.getItem('token');
+let logout = document.getElementById('logout-btn');
+/*let userId = localStorage.getItem('userId');*/
+let token = localStorage.getItem('token');
+/*JSON.parse(localStorage.getItem("userToken"));*/
 
 /*const modal1Works = document.querySelector('#images-works')*/
 
-// Vérifiez si l'utilisateur est connecté
+// -------Vérifiez si l'utilisateur est connecté-------
 const handleLogin = true;
 
-// Faire appel à mon API avec fetch
-function getWorks() {
+// ---------------Faire appel à mon API avec fetch---------------
+
+async function getWorks() {
   fetch('http://localhost:5678/api/works')
     .then(response => response.json()) // Récupérer les données au format JSON
     .then((data) => {
       getGallery(data); // Appeler la fonction section() pour afficher les données
       addFilterListeners(data); // Ajouter les listeners pour les filtres
-      
     })
-   /* .catch(error => {
+   .catch(error => {
       // traiter l'erreur
   alert('erreur');
-    });*/
-  
+    });
 }
 
-// Création de la galerie via le DOM
+// ----------------Création de la galerie via le DOM---------------------
+
 function getGallery(works) {
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // Effacer le contenu de la galerie précédente
@@ -59,8 +62,8 @@ function getGallery(works) {
   });
 }
 
+//----------------- Création des filtres------------
 
-// Création des filtres
 function addFilterListeners(works) {
   const boutonTous = document.querySelector(".filter-tous");
 
@@ -96,7 +99,7 @@ function addFilterListeners(works) {
   });
 
  
-  /*------------------ Gestion modal1 et 2  ---------------------*/
+  //------------------ Gestion modal 1 et 2  ---------------------
   
   if (handleLogin === true) {
     topEdition.style.visibility = 'visible';
@@ -106,15 +109,22 @@ function addFilterListeners(works) {
     document.getElementById('logout-btn').style.display = 'block';
     document.getElementById('login-btn').style.display = 'none';
   }
+/*
+  logout.addEventListener('click', function (event) {
+    handleLogin = false;
+    console.log('click'); // déconnecte l'utilisateur en mettant la variable à false
+});*/
+
   
-  // Affichez la modal1 lorsque le bouton modal est cliqué
+  // ---------Affichez la modal1 lorsque le bouton modal est cliqué---------
+
   modal1Btn.addEventListener('click', function (event) {
     event.preventDefault();
     modal1.style.display = 'block';
   });
 
-  
   // Masquez la modal1 lorsque le bouton de sortie est cliqué ou lorsqu'on clique en dehors de la modal
+
   exitBtns.forEach(btn => {
     btn.addEventListener('click', function (event) {
       event.preventDefault();
@@ -127,11 +137,18 @@ function addFilterListeners(works) {
       hideModal1();
     }
   });
+  
+    //------------- Fermer la modale lorsqu'on clique à l'extérieur de celle-ci------
+   /* window.addEventListener("click", function(event) {
+      if (event.target !== modal1) {
+        modal1.style.display = 'none';
+      }
+      });*/
+  
 
 
+  //----------Afficher galerie dans modal1--------------
 
-
-  //Afficher galerie dans modal1
   const modal1Works = document.querySelector('.images-works');
 modal1Works.innerHTML = '';
 
@@ -140,6 +157,7 @@ fetch('http://localhost:5678/api/works')
   .then(data => {
     console.log(data); // affiche la réponse de l'API dans la console
     data.forEach((work, index) => {
+
       const workDiv = document.createElement('div');
       workDiv.classList.add('gallery-works');
       workDiv.dataset.id = work._id;
@@ -159,11 +177,12 @@ fetch('http://localhost:5678/api/works')
       deleteIcon.style.color ='white';
      deleteIcon.style.backgroundColor = 'black';
       deleteIcon.style.padding = '5px -15px';*/
-
+    
       workDiv.appendChild(image);
       workDiv.appendChild(title);
 
-      // Vérifier si nous sommes en train de créer le premier élément de la galerie
+      // Vérifier si nous sommes en train de créer le premier élément de la galerie 
+
       if (index === 0) {
         const arrowsIcon = document.createElement('i');
         arrowsIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
@@ -172,7 +191,7 @@ fetch('http://localhost:5678/api/works')
         arrowsIcon.style.left = '50px';
         arrowsIcon.style.color ='blue';*/
       }
-
+      
       workDiv.appendChild(deleteIcon);
       modal1Works.appendChild(workDiv);
 
@@ -182,16 +201,20 @@ fetch('http://localhost:5678/api/works')
         if (event.target === deleteIcon) {
           const workDiv = event.target.closest('.gallery-works');
           const workId = workDiv.dataset.id;
- 
+          
           fetch('http://localhost:5678/api/works/' + workId, {
             method: 'DELETE',
             headers: {
-              "Authorization": `Bearer ${localStorage.getItem('token')}`
-            }
-          })
+
+              Accept: "application/json",
+        
+              Authorization: `Bearer ${token}`,
+        
+            },
+          })  
           .then(response => {
             if (response.ok) {
-              workDiv.remove(); // Supprime le travail de la galerie
+              workDiv.remove(); // Supprime le travail de la galerieajout i
             } else {
               throw new Error('Erreur de suppression');
             }
@@ -204,7 +227,8 @@ fetch('http://localhost:5678/api/works')
     });
   });
 
-  // Événement pour ouvrir la modal2
+  // -----------------Événement pour ouvrir la modal2-------------
+
   ajouterPhoto.addEventListener("click", function (event) {
     event.preventDefault();
     modal1.style.display = "none";
@@ -212,7 +236,8 @@ fetch('http://localhost:5678/api/works')
   });
 
 
-  // Evénemen pour retourner à la modal1
+  // ------------Evénemen pour retourner à la modal1--------------
+
   backToModal1.addEventListener('click', function (event) {
     event.preventDefault();
     modal2.style.display = "none";
@@ -220,27 +245,25 @@ fetch('http://localhost:5678/api/works')
   })
 
 
-  // Événement pour masquer la modal2
+  // -------------Événement pour masquer la modal2---------------
   exitModal2.addEventListener("click", function (event) {
     event.preventDefault()
     modal2.style.display = "none";
   })
+  /*modal2.addEventListener('click', event => {
+    if (event.target !== modal2 || event.target.classList.contains('exit2')) {
+      hideModal2();
+    }
+  });*/
 
 
-  // Changement login en logout à la connection
+  // ------------Changement login en logout à la connection-----------
   
   if (localStorage.getItem('token')) {
     btnLogin.addEventListener('click', function (event) {
       btnLogin.display.style = 'none';
     })
   }
-
-  modal2.addEventListener('click', event => {
-    if (event.target === modal2 || event.target.classList.contains('exit2')) {
-      hideModal2();
-    }
-  });
-
 
   // Événement pour retourner à la modal1 depuis la modal2
   /*const backToModal1Button = document.querySelector('.back');
@@ -264,10 +287,14 @@ fetch('http://localhost:5678/api/works')
 getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
 
 
-// Recupération image dans dossier
+// ----------------------Recupération image dans dossier--------
+
 const photoInput = document.getElementById("photo-input");
 const newImage = document.getElementById("new-image");
- 
+const validationButton = document.querySelector(".validation");
+const titreInput = document.querySelector("#modal2 input[type=text]");
+const categorieSelect = document.querySelector("#modal2 select");
+
 photoInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (file) {
@@ -282,33 +309,51 @@ photoInput.addEventListener("change", (event) => {
 });
 
 
-//Envoi à l'API
-const validationButton = document.querySelector(".validation");
-const titreInput = document.querySelector("#modal2 input[type=text]");
-const categorieSelect = document.querySelector("#modal2 select");
+//------------------------Envoi à l'API----------------
+
+
+/*const photoInput = document.querySelector("#modal2 input[type=file]");*/
 
 validationButton.addEventListener("click", () => {
   const formData = new FormData();
   formData.append("titre", titreInput.value);
   formData.append("categorie", categorieSelect.value);
   formData.append("photo", photoInput.files[0]);
+
+  if (titreInput.value === '' || categorieSelect.value === '' || photoInput.files.length === 0) {
+    // Afficher un message d'erreur
+    alert('Veuillez remplir tous les champs obligatoires');
+    return;
+  }
   
-  fetch('http://localhost:5678/api/works', {
+  fetch("http://localhost:5678/api-docs/#/default/post_works", {
     method: "POST",
-    body: formData
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
   })
   .then(response => {
     if (response.ok) {
       // traiter la réussite
+      console.log(titreInput.value);
+      console.log(categorieSelect.value);
+      console.log(photoInput.files);
     } else {
       throw new Error("La réponse du réseau n'était pas correcte");
     }
   })
   .catch(error => {
     // traiter l'erreur
-
+    console.error(error);
+  })
+  .catch(networkError => {
+    console.error(networkError);
+    alert('Une erreur s\'est produite lors de l\'envoi des données');
   });
-});
+})
+
 
 
 
@@ -621,7 +666,6 @@ backToModal1.addEventListener("click", function (event) {
   openModal(event, modal1);
   console.log("Modal 1 opened"); // Vérifier si la modal1 est ouverte
 });*/
-
 
 
 
