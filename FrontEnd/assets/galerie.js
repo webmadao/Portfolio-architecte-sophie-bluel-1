@@ -1,37 +1,42 @@
 "use strict"
-const topEdition = document.querySelector('.top-edition');
+/*const ajouterPhotoBtn = document.querySelector('.ajouter-photo');*/
+let token = localStorage.getItem('token');
+//gestion les éléments du login/logout -----------
 const btnLogin = document.querySelector('.login-btn');
 const btnLogout = document.querySelector('.logout-btn');
 const modifierImageBtn = document.querySelector('.modifier-image');
 const modeEditionBtns = document.querySelectorAll('.mode-edition');
 const modal1Btn = document.querySelector('.js-modal');
-const ajouterPhotoBtn = document.querySelector('.ajouter-photo');
+const exitBtns = document.querySelectorAll('.exit');
+let logout = document.getElementById('logout-btn');
+
+//Gestion modal1-----------------------
 const modal1 = document.querySelector('#modal1');
 const modalWrapper = document.querySelectorAll('.modal-wrapper');
-const exitBtns = document.querySelectorAll('.exit');
+
+// Gestion modal2-----------------------
 const backToModal1 = document.querySelector('.back');
 const ajouterPhoto = document.querySelector(".ajouter-photo a");
 const exitModal2 = document.querySelector(".exit2");
 const modal2 = document.querySelector('#modal2');
-let logout = document.getElementById('logout-btn');
-let token = localStorage.getItem('token');
 
-// ----------------------Recupération image dans dossier--------
+//Gestion modal 1 et 2  ---------------------
+const topEdition = document.querySelector('.top-edition');
 
+//Afficher galerie dans modal1--------------
+const modal1Works = document.querySelector('.images-works');
+
+// Recupération image dans dossier--------
 const photoInput = document.getElementById("photo-input");
 const newImage = document.getElementById("new-image");
 const validationButton = document.querySelector(".validation");
 const titreInput = document.querySelector("#modal2 input[type=text]");
 const categorieSelect = document.querySelector("#modal2 select");
 
-console.log(btnLogin);
-console.log(btnLogout);
-
-
-// -------Vérifiez si l'utilisateur est connecté-------
+//Vérifiez si l'utilisateur est connecté-------
 const handleLogin = true;
 
-// ---------------Faire appel à mon API avec fetch---------------
+// Faire appel à mon API avec fetch---------------
 
 async function getWorks() {
   fetch('http://localhost:5678/api/works')
@@ -106,17 +111,16 @@ function addFilterListeners(works) {
     getGallery(filterHotelRestaurants);
   });
 
-  function logout() {
 
-    localStorage.clear();
-    location.reload();
 
+ //--------------gestion les éléments du login/logout -----------
+  
+ function logout() {
+  localStorage.clear();
+  location.reload();
 
 }
 
- 
-  //------------------ Gestion modal 1 et 2  ---------------------
-  
   if (localStorage.getItem("token")) {
     topEdition.style.visibility = 'visible';
     modifierImageBtn.style.display = 'block';
@@ -133,16 +137,14 @@ function addFilterListeners(works) {
 
   btnLogout.addEventListener('click', logout);
 
-  
-  // ---------Affichez la modal1 lorsque le bouton modal est cliqué---------
 
+  // ---------Affichez la modal1 lorsque le bouton modal est cliqué---------
   modal1Btn.addEventListener('click', function (event) {
     event.preventDefault();
     modal1.style.display = 'block';
   });
 
   // Masquez la modal1 lorsque le bouton de sortie est cliqué ou lorsqu'on clique en dehors de la modal
-
   exitBtns.forEach(btn => {
     btn.addEventListener('click', function (event) {
       event.preventDefault();
@@ -156,18 +158,9 @@ function addFilterListeners(works) {
     }
   });
   
-    //------------- Fermer la modale lorsqu'on clique à l'extérieur de celle-ci------
-   /* window.addEventListener("click", function(event) {
-      if (event.target !== modal1) {
-        modal1.style.display = 'none';
-      }
-      });*/
-  
 
+//----------Afficher galerie dans modal1--------------
 
-  //----------Afficher galerie dans modal1--------------
-
-  const modal1Works = document.querySelector('.images-works');
 modal1Works.innerHTML = '';
 
 fetch('http://localhost:5678/api/works')
@@ -207,33 +200,41 @@ fetch('http://localhost:5678/api/works')
 
       // Supprimer work au clic sur l'icône de suppression
       
-      deleteIcon.addEventListener('click', function (event) {
-        if (event.target === deleteIcon) {
-          const workDiv = event.target.closest('.gallery-works');
-          const workId = workDiv.dataset.id;
-          
-          fetch('http://localhost:5678/api/works/' + workId, {
-            method: 'DELETE',
-            headers: {
+      // Supprimer work au clic sur l'icône de suppression
+deleteIcon.addEventListener('click', function (event) {
+  if (event.target === deleteIcon) {
+    const workDiv = event.target.closest('.gallery-works');
+    const workId = workDiv.dataset.id;
 
-              Accept: "application/json",
-        
-              Authorization: `Bearer ${token}`,
-        
-            },
-          })  
-          .then(response => {
-            if (response.ok) {
-              workDiv.remove(); // Supprime le travail de la galerieajout i
-            } else {
-              throw new Error('Erreur de suppression');
-            }
-          })
-          .catch(error => {
-            console.error(error);
-          });
-        }
-      });
+    fetch('http://localhost:5678/api/works/' + workId, {
+      method: 'DELETE',
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })  
+    .then(response => {
+      if (response.ok) {
+        workDiv.remove();
+      } else {
+        throw new Error('Erreur de suppression');
+      }
+    })
+    .then(() => {
+      // Mettre à jour la galerie après la suppression
+      const works = Array.from(document.querySelectorAll('.gallery-works')).map(workDiv => ({
+        _id: workDiv.dataset.id,
+        imageUrl: workDiv.querySelector('img').src,
+        title: workDiv.querySelector('h4').innerText
+      }));
+      getGallery(works);
+    })
+    .catch(error => {
+      console.error(error);
+    });
+  }
+});
+
     });
   });
 
@@ -363,7 +364,12 @@ getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les fil
 
 
 
-
+//------------- Fermer la modale lorsqu'on clique à l'extérieur de celle-ci------
+   /* window.addEventListener("click", function(event) {
+      if (event.target !== modal1) {
+        modal1.style.display = 'none';
+      }
+      });*/
 
 
 
