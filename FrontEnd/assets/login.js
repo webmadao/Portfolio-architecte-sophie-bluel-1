@@ -1,4 +1,14 @@
 "use strict";
+
+const btnLogin = document.querySelector('.login-btn');
+const btnLogout = document.querySelector('.logout-btn');
+
+
+
+/**
+ * 
+ * @param {*} event 
+ */
 function handleLogin(event) {
     event.preventDefault(); // Empêche le formulaire de recharger la page
 
@@ -47,11 +57,19 @@ function handleLogin(event) {
         });
 }
 
+/*
+function logout() {
+
+    localStorage.clear();
+    location.reload();
+
+}*/
+
 
 // Ajout d'un événement d'écouteur pour le bouton de connexion
-const loginButton = document.querySelector('#login-button');
-loginButton.addEventListener('click', handleLogin);
 
+btnLogin.addEventListener('click', handleLogin);
+btnLogout.addEventListener('click', logout);
 
 
 

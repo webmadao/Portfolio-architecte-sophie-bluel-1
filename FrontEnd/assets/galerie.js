@@ -14,11 +14,19 @@ const ajouterPhoto = document.querySelector(".ajouter-photo a");
 const exitModal2 = document.querySelector(".exit2");
 const modal2 = document.querySelector('#modal2');
 let logout = document.getElementById('logout-btn');
-/*let userId = localStorage.getItem('userId');*/
 let token = localStorage.getItem('token');
-/*JSON.parse(localStorage.getItem("userToken"));*/
 
-/*const modal1Works = document.querySelector('#images-works')*/
+// ----------------------Recupération image dans dossier--------
+
+const photoInput = document.getElementById("photo-input");
+const newImage = document.getElementById("new-image");
+const validationButton = document.querySelector(".validation");
+const titreInput = document.querySelector("#modal2 input[type=text]");
+const categorieSelect = document.querySelector("#modal2 select");
+
+console.log(btnLogin);
+console.log(btnLogout);
+
 
 // -------Vérifiez si l'utilisateur est connecté-------
 const handleLogin = true;
@@ -40,7 +48,7 @@ async function getWorks() {
 
 // ----------------Création de la galerie via le DOM---------------------
 
-function getGallery(works) {
+function getGallery(works){ 
   const gallery = document.querySelector('.gallery');
   gallery.innerHTML = ''; // Effacer le contenu de la galerie précédente
 
@@ -98,22 +106,32 @@ function addFilterListeners(works) {
     getGallery(filterHotelRestaurants);
   });
 
+  function logout() {
+
+    localStorage.clear();
+    location.reload();
+
+
+}
+
  
   //------------------ Gestion modal 1 et 2  ---------------------
   
-  if (handleLogin === true) {
+  if (localStorage.getItem("token")) {
     topEdition.style.visibility = 'visible';
     modifierImageBtn.style.display = 'block';
     modeEditionBtns.forEach(btn => btn.style.display = 'block');
     modal1Btn.style.display = 'block';
-    document.getElementById('logout-btn').style.display = 'block';
-    document.getElementById('login-btn').style.display = 'none';
+    document.querySelector('.logout-btn').style.display = 'block';
+    document.querySelector('.login-btn').style.display = 'none';
+  } else{
+    document.querySelector('.logout-btn').style.display = 'none';
+    document.querySelector('.login-btn').style.display = 'block';
   }
-/*
-  logout.addEventListener('click', function (event) {
-    handleLogin = false;
-    console.log('click'); // déconnecte l'utilisateur en mettant la variable à false
-});*/
+
+  console.log(btnLogout);
+
+  btnLogout.addEventListener('click', logout);
 
   
   // ---------Affichez la modal1 lorsque le bouton modal est cliqué---------
@@ -171,12 +189,7 @@ fetch('http://localhost:5678/api/works')
 
       const deleteIcon = document.createElement('i');
       deleteIcon.classList.add('fa-solid', 'fa-trash-can');
-      /*deleteIcon.style.position = 'relative';
-      deleteIcon.style.bottom = '125px';
-      deleteIcon.style.left = '30px';
-      deleteIcon.style.color ='white';
-     deleteIcon.style.backgroundColor = 'black';
-      deleteIcon.style.padding = '5px -15px';*/
+    
     
       workDiv.appendChild(image);
       workDiv.appendChild(title);
@@ -187,9 +200,6 @@ fetch('http://localhost:5678/api/works')
         const arrowsIcon = document.createElement('i');
         arrowsIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
         image.parentNode.insertBefore(arrowsIcon, image);
-        /*arrowsIcon.style.bottom = '100px';
-        arrowsIcon.style.left = '50px';
-        arrowsIcon.style.color ='blue';*/
       }
       
       workDiv.appendChild(deleteIcon);
@@ -250,12 +260,7 @@ fetch('http://localhost:5678/api/works')
     event.preventDefault()
     modal2.style.display = "none";
   })
-  /*modal2.addEventListener('click', event => {
-    if (event.target !== modal2 || event.target.classList.contains('exit2')) {
-      hideModal2();
-    }
-  });*/
-
+  
 
   // ------------Changement login en logout à la connection-----------
   
@@ -265,15 +270,6 @@ fetch('http://localhost:5678/api/works')
     })
   }
 
-  // Événement pour retourner à la modal1 depuis la modal2
-  /*const backToModal1Button = document.querySelector('.back');
-  backToModal1Button.addEventListener('click', showModal);*/
-
-
-  // Appel de la fonction addEventListeners() une fois que le DOM est chargé
-  /*document.addEventListener('DOMContentLoaded', addEventListeners);*/
-
-
   // Fonction pour masquer ou afficher la section "top-edition"
   function toggleTopEdition() {
     const topEdition = document.querySelector('.top-edition');
@@ -281,19 +277,9 @@ fetch('http://localhost:5678/api/works')
     topEdition.style.display = loggedIn ? 'block' : 'none';
   }
   
-
 }
 
-getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
-
-
 // ----------------------Recupération image dans dossier--------
-
-const photoInput = document.getElementById("photo-input");
-const newImage = document.getElementById("new-image");
-const validationButton = document.querySelector(".validation");
-const titreInput = document.querySelector("#modal2 input[type=text]");
-const categorieSelect = document.querySelector("#modal2 select");
 
 photoInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
@@ -340,10 +326,14 @@ validationButton.addEventListener("click", () => {
       console.log(titreInput.value);
       console.log(categorieSelect.value);
       console.log(photoInput.files);
+  
+      // Ajouter le work à la galerie
+      /*getWorks();*/
     } else {
       throw new Error("La réponse du réseau n'était pas correcte");
     }
   })
+  
   .catch(error => {
     // traiter l'erreur
     console.error(error);
@@ -353,6 +343,10 @@ validationButton.addEventListener("click", () => {
     alert('Une erreur s\'est produite lors de l\'envoi des données');
   });
 })
+
+getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
+
+
 
 
 
