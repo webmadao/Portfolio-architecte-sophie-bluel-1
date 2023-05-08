@@ -779,6 +779,23 @@ small {
 	cursor: pointer;
 }
 
-.validation:hover {
+.login-btn:hover {
 	background-color: #1D6154;
+}
+
+.login-btn {
+	display: block;
+	margin: 30px 0;
+	background-color: #A7A7A7;
+	padding: 10px 60px;
+	color: #fff;
+	border: none;
+	border-radius: 60px;
+	font-weight: bolder;
+	cursor: pointer;
+
+}
+
+.logout-btn {
+	display: none;
 }
