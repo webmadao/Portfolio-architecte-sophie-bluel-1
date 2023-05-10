@@ -1,4 +1,5 @@
 "use strict"
+let works = [];
 /*const ajouterPhotoBtn = document.querySelector('.ajouter-photo');*/
 let token = localStorage.getItem('token');
 //gestion les éléments du login/logout -----------
@@ -280,6 +281,7 @@ deleteIcon.addEventListener('click', function (event) {
   
 }
 
+
 // ----------------------Recupération image dans dossier--------
 
 photoInput.addEventListener("change", (event) => {
@@ -299,7 +301,11 @@ photoInput.addEventListener("change", (event) => {
 //------------------------Envoi à l'API----------------
 
 
-/*const photoInput = document.querySelector("#modal2 input[type=file]");*/
+// Fonction pour ajouter un travail à la galerie
+/*function addWorkToGallery(work) {
+  works.push(work); // Ajouter le nouveau travail à l'array works
+  getGallery(works); // Mettre à jour la galerie avec les nouvelles données
+}*/
 
 validationButton.addEventListener("click", () => {
   const formData = new FormData();
@@ -312,6 +318,7 @@ validationButton.addEventListener("click", () => {
     alert('Veuillez remplir tous les champs obligatoires');
     return;
   }
+ /* const ChargeUtile = JSON.stringify(formData);*/
   
   fetch("http://localhost:5678/api-docs/#/default/post_works", {
     method: "POST",
@@ -327,12 +334,16 @@ validationButton.addEventListener("click", () => {
       console.log(titreInput.value);
       console.log(categorieSelect.value);
       console.log(photoInput.files);
-  
-      // Ajouter le work à la galerie
-      /*getWorks();*/
+      return response.json();
     } else {
       throw new Error("La réponse du réseau n'était pas correcte");
     }
+  })
+  .then(data => {
+    // Ajouter le nouvel élément à la galerie
+    getGallery([...works, data]);
+    // Traiter les données JSON 
+    return response.json();
   })
   
   .catch(error => {
@@ -345,9 +356,8 @@ validationButton.addEventListener("click", () => {
   });
 })
 
+
 getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
-
-
 
 
 
