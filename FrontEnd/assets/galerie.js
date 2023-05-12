@@ -33,6 +33,8 @@ const newImage = document.getElementById("new-image");
 const validationButton = document.querySelector(".validation");
 const titreInput = document.querySelector("#modal2 input[type=text]");
 const categorieSelect = document.querySelector("#modal2 select");
+const iconePlus = document.querySelector('.fa-plus');
+const iconAddImage = document.querySelector('.fa-image')
 
 //Vérifiez si l'utilisateur est connecté-------
 const handleLogin = true;
@@ -44,7 +46,8 @@ async function getWorks() {
     .then(response => response.json()) // Récupérer les données au format JSON
     .then((data) => {
       getGallery(data); // Appeler la fonction section() pour afficher les données
-      addFilterListeners(data); // Ajouter les listeners pour les filtres
+      addFilterListeners(data);
+      
     })
    .catch(error => {
       // traiter l'erreur
@@ -207,28 +210,30 @@ deleteIcon.addEventListener('click', function (event) {
     const workDiv = event.target.closest('.gallery-works');
     const workId = workDiv.dataset.id;
 
-    fetch('http://localhost:5678/api/works/' + workId, {
+    fetch('http://localhost:5678/api/works/1' + workId, {
       method: 'DELETE',
       headers: {
         Accept: "application/json",
         Authorization: `Bearer ${token}`,
       },
+      
     })  
     .then(response => {
       if (response.ok) {
         workDiv.remove();
+        works = works.filter(work => work._id !== workId);
       } else {
         throw new Error('Erreur de suppression');
       }
     })
     .then(() => {
       // Mettre à jour la galerie après la suppression
-      const works = Array.from(document.querySelectorAll('.gallery-works')).map(workDiv => ({
+      const galleryWorks = Array.from(document.querySelectorAll('.gallery-works')).map(workDiv => ({
         _id: workDiv.dataset.id,
         imageUrl: workDiv.querySelector('img').src,
         title: workDiv.querySelector('h4').innerText
       }));
-      getGallery(works);
+      getGallery(galleryWorks);
     })
     .catch(error => {
       console.error(error);
@@ -292,7 +297,9 @@ photoInput.addEventListener("change", (event) => {
     reader.onload = () => {
       newImage.src = reader.result;
       newImage.style.width = '200px';
-      photoInput.style.display = 'none';
+      photoInput.style.visibility = 'hidden';
+      iconePlus.style.visibility = 'hidden';
+      iconAddImage.style.visibility = 'hidden';
     };
   }
 });
@@ -305,7 +312,23 @@ photoInput.addEventListener("change", (event) => {
 /*function addWorkToGallery(work) {
   works.push(work); // Ajouter le nouveau travail à l'array works
   getGallery(works); // Mettre à jour la galerie avec les nouvelles données
+
 }*/
+
+photoInput.addEventListener("change", (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      newImage.src = reader.result;
+      newImage.style.width = '200px';
+      photoInput.style.display = 'none';
+    };
+  }
+});
+
+/*const photoInput = document.querySelector("#modal2 input[type=file]");*/
 
 validationButton.addEventListener("click", () => {
   const formData = new FormData();
@@ -318,43 +341,43 @@ validationButton.addEventListener("click", () => {
     alert('Veuillez remplir tous les champs obligatoires');
     return;
   }
- /* const ChargeUtile = JSON.stringify(formData);*/
-  
+
+  const data = {
+    titre: titreInput.value,
+    categorie: categorieSelect.value,
+  };
+
   fetch("http://localhost:5678/api-docs/#/default/post_works", {
     method: "POST",
     headers: {
       Accept: "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: formData,
+    body: JSON.stringify(data),
   })
-  .then(response => {
-    if (response.ok) {
+    .then(response => {
+      if (response.ok) {
       // traiter la réussite
       console.log(titreInput.value);
       console.log(categorieSelect.value);
       console.log(photoInput.files);
-      return response.json();
-    } else {
-      throw new Error("La réponse du réseau n'était pas correcte");
-    }
-  })
-  .then(data => {
-    // Ajouter le nouvel élément à la galerie
-    getGallery([...works, data]);
-    // Traiter les données JSON 
-    return response.json();
-  })
+       /* return response.json();*/
+      } else {
+        throw new Error("La réponse du réseau n'était pas correcte");
+      }
+    })
+   /* .then(data => {
+      // Ajouter le nouvel élément à la galerie
+      works.push(data);
+      getGallery(works);
+    })*/
   
-  .catch(error => {
-    // traiter l'erreur
-    console.error(error);
-  })
-  .catch(networkError => {
-    console.error(networkError);
+    .catch(networkError => {
+      console.error(networkError);
     alert('Une erreur s\'est produite lors de l\'envoi des données');
-  });
+    });
 })
+
 
 
 getWorks();// Appeler la fonction getWorks() pour afficher la galerie et les filtres
@@ -676,11 +699,4 @@ backToModal1.addEventListener("click", function (event) {
   openModal(event, modal1);
   console.log("Modal 1 opened"); // Vérifier si la modal1 est ouverte
 });*/
-
-
-
-
-
-
-
 
