@@ -473,8 +473,9 @@ h3 {
 	height: 100%;
 	text-align: center;
 	z-index: 1000;
-
+	display: none;
 }
+
 
 #modal1 .modal-wrapper {
 	width: 650px;
@@ -658,7 +659,10 @@ a {
 	transform: translate(-50%, -50%);
 	-ms-transform: translate(-50%, -50%);
 	-webkit-transform: translate(-50%, -50%);
+}
 
+#modal2 {
+	display: none;
 }
 
 .boutons {
@@ -798,4 +802,38 @@ small {
 
 .logout-btn {
 	display: none;
+}
+
+.top-edition {
+	visibility: hidden;
+}
+
+.modifier-image {
+	display: none;
+}
+
+.mode-edition {
+	display: none;
+}
+
+.js-modal {
+	display: none;
+}
+
+
+.ajout-photo {
+	visibility: visible;
+}
+
+
+#photo-input {
+	visibility: visible;
+}
+
+.fa-plus {
+	visibility: visible;
+}
+
+.fa-image {
+	visibility: visible;
 }
