@@ -559,16 +559,20 @@ a {
 	width: 550px;
 	display: flex;
 	flex-wrap: wrap;
-	gap: 10px;
+	gap: 20px;
 	font-weight: 200;
 	border-bottom: 0.2px solid rgb(61, 61, 61);
 	margin: 0;
 	margin-left: 55px;
+	align-items: center;
+
 }
 
 .gallery-works {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
+
 }
 
 .images-works figure {
@@ -581,7 +585,6 @@ a {
 }
 
 .images-works h4 {
-
 	font-size: 10px;
 }
 
@@ -605,39 +608,11 @@ a {
 	background-color: black;
 	padding: 3px;
 	margin: 0 35px;
-	border-radius: 2px
+	border-radius: 2px;
 }
 
 
-/*
-.fa-trash-can {
-	color: white;
-	background-color: #000000;
-	padding: 5px;
-}*/
 
-/*
-.i {
-	position: absolute;
-	top: 10px;
-	right: 0px;
-	transform: translate(-50%, -50%);
-	color: #ffffff;
-	background-color: #000000;
-	border-radius: 2px;
-	padding: 2px;
-}*/
-
-/* .fa-arrows-up-down-left-right {
-	position: absolute;
-	top: 15px;
-	right: 20px;
-	transform: translate(-50%, -50%);
-	color: #ffffff;
-	background-color: #000000;
-	border-radius: 2px;
-	padding: 2px;
-}*/
 
 /*--------------------modal 2*/
 
@@ -827,7 +802,7 @@ small {
 
 
 #photo-input {
-	visibility: visible;
+	display: block;
 }
 
 .fa-plus {
@@ -835,5 +810,13 @@ small {
 }
 
 .fa-image {
-	visibility: visible;
+	display: block;
+}
+
+.limit-size {
+	display: block;
+}
+
+.ajout-photo {
+	display: block;
 }
