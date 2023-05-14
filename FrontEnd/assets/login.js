@@ -69,7 +69,7 @@ function logout() {
 // Ajout d'un événement d'écouteur pour le bouton de connexion
 
 btnLogin.addEventListener('click', handleLogin);
-btnLogout.addEventListener('click', logout);
+/*btnLogout.addEventListener('click', logout);*/
 
 
 
