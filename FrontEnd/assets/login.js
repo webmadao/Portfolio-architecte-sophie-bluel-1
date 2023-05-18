@@ -57,19 +57,9 @@ function handleLogin(event) {
         });
 }
 
-/*
-function logout() {
-
-    localStorage.clear();
-    location.reload();
-
-}*/
-
-
 // Ajout d'un événement d'écouteur pour le bouton de connexion
 
 btnLogin.addEventListener('click', handleLogin);
-/*btnLogout.addEventListener('click', logout);*/
 
 
 
