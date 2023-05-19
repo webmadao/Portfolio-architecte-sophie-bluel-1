@@ -229,7 +229,7 @@ function toHideModal1(event) {
 
   modal1Works.innerHTML = '';
 
-  function fetchData() {
+  /*function fetchData() {
     return fetch('http://localhost:5678/api/works')
       .then(response => response.json())
       .then(data => {
@@ -240,7 +240,7 @@ function toHideModal1(event) {
         console.error(error);
         throw error;
       });
-  }
+  }*/
   async function fetchData() {
     try {
       const response = await fetch('http://localhost:5678/api/works');
@@ -440,8 +440,12 @@ getWorks()
     addWorkToGallery(works);
 });
 
-
-
+/*
+async function getAllWorks(){
+  const [works, gallery, newWorks] = await Promise
+.all([getWorks(), fetchData(), refreshGallery()]);
+return {works, gallery, newWorks};
+}*/
 
 
 
