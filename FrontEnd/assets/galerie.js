@@ -1,5 +1,5 @@
 "use strict"
-let works;
+let works = getWorks();
 const ajouterPhotoBtn = document.querySelector('.ajouter-photo');
 let token = localStorage.getItem('token');
 //gestion les éléments du login/logout -----------
@@ -42,20 +42,36 @@ const handleLogin = true;
 
 // Faire appel à mon API avec fetch---------------
 
- function getWorks() {
+ /*function getWorks() {
   return fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(data => {
     /* getGallery(data);
     addFilterListeners(data);
     addWorkToGallery(data);*/
-    return data;
+   /* return data;
     })
     .catch(error => {
     console.error(error);
     throw error;
     });
+  }*/
+  async function getWorks() {
+    try {
+      const response = await fetch('http://localhost:5678/api/works');
+      const data = await response.json();
+      
+      /* getGallery(data);
+      addFilterListeners(data);
+      addWorkToGallery(data);*/
+      
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
+  
 
 // ----------------Création de la galerie via le DOM---------------------
 
@@ -213,82 +229,106 @@ function toHideModal1(event) {
 
   modal1Works.innerHTML = '';
 
-  fetch('http://localhost:5678/api/works')
-    .then(response => response.json())
-    .then(data => {
-
-      console.log(data); // afficher la réponse de l'API dans la console
-      data.forEach((work, index) => {
-
-
-        const workDiv = document.createElement('div');
-        workDiv.classList.add('gallery-works');
-        workDiv.dataset.id = work._id;
-
-        const image = document.createElement('img');
-        image.src = work.imageUrl;
-        image.alt = work.title;
-
-        const title = document.createElement('h4');
-        title.innerText = "éditer";
-
-        const deleteIcon = document.createElement('i');
-        deleteIcon.classList.add('fa-solid', 'fa-trash-can');
-
-
-        workDiv.appendChild(image);
-        workDiv.appendChild(title);
-
-        // Vérifier si nous sommes en train de créer le premier élément de la galerie
-
-        if (index === 0) {
-          const arrowsIcon = document.createElement('i');
-          arrowsIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
-          image.parentNode.insertBefore(arrowsIcon, image);
-          workDiv.style.height = '191px';
-        }
-
-        workDiv.appendChild(deleteIcon);
-        modal1Works.appendChild(workDiv);
-
-
-// Supprimer work au clic sur l'icône de suppression
-    deleteIcon.addEventListener('click', function (event) {
-  if (event.target === deleteIcon) {
-    const workDiv = event.target.closest('.gallery-works');
-    const workId = workDiv.dataset.id;
-
-    fetch('http://localhost:5678/api/works/' + workId, {
-      method: 'DELETE',
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(response => {
-        if (response.ok) {
-          workDiv.remove();
-        } else {
-          throw new Error('Erreur de suppression');
-        }
-      })
-      .then(() => {
-        // Mettre à jour la galerie après la suppression
-        const works = Array.from(document.querySelectorAll('.gallery-works')).map(workDiv => ({
-          _id: workDiv.dataset.id,
-          imageUrl: workDiv.querySelector('img').src,
-          title: workDiv.querySelector('h4').innerText
-        }));
-        getGallery(works);
+  function fetchData() {
+    return fetch('http://localhost:5678/api/works')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data); // Afficher la réponse de l'API dans la console
+        return data;
       })
       .catch(error => {
         console.error(error);
+        throw error;
       });
   }
-        });
-
-        });
-        });
+  async function fetchData() {
+    try {
+      const response = await fetch('http://localhost:5678/api/works');
+      const data = await response.json();
+      console.log(data); // Afficher la réponse de l'API dans la console
+      return data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+  
+  // Fonction pour créer la galerie à partir des données récupérées
+  function createGallery(data) {
+    const modal1Works = document.querySelector('.images-works');
+    modal1Works.innerHTML = '';
+  
+    data.forEach((work, index) => {
+      const workDiv = document.createElement('div');
+      workDiv.classList.add('gallery-works');
+      workDiv.dataset.id = work._id;
+  
+      const image = document.createElement('img');
+      image.src = work.imageUrl;
+      image.alt = work.title;
+  
+      const title = document.createElement('h4');
+      title.innerText = "éditer";
+  
+      const deleteIcon = document.createElement('i');
+      deleteIcon.classList.add('fa-solid', 'fa-trash-can');
+  
+      workDiv.appendChild(image);
+      workDiv.appendChild(title);
+  
+      // Vérifier si nous sommes en train de créer le premier élément de la galerie
+      if (index === 0) {
+        const arrowsIcon = document.createElement('i');
+        arrowsIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
+        image.parentNode.insertBefore(arrowsIcon, image);
+        workDiv.style.height = '191px';
+      }
+  
+      workDiv.appendChild(deleteIcon);
+      modal1Works.appendChild(workDiv);
+  
+      // Supprimer work au clic sur l'icône de suppression
+      deleteIcon.addEventListener('click', function (event) {
+        if (event.target === deleteIcon) {
+          const workDiv = event.target.closest('.gallery-works');
+          const workId = workDiv.dataset.id;
+  
+          fetch('http://localhost:5678/api/works/' + workId, {
+            method: 'DELETE',
+            headers: {
+              Accept: "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then(response => {
+              if (response.ok) {
+                workDiv.remove();
+              } else {
+                throw new Error('Erreur de suppression');
+              }
+            })
+            .then(() => {
+              // Mettre à jour la galerie après la suppression
+              const works = Array.from(document.querySelectorAll('.gallery-works')).map(workDiv => ({
+                _id: workDiv.dataset.id,
+                imageUrl: workDiv.querySelector('img').src,
+                title: workDiv.querySelector('h4').innerText
+              }));
+              getGallery(works);
+            })
+            .catch(error => {
+              console.error(error);
+            });
+        }
+      });
+    });
+  }
+  
+  // Appeler les fonctions fetchData() et createGallery() pour récupérer les données et créer la galerie
+  fetchData()
+    .then(data => {
+      createGallery(data);
+    });
 
 
 
@@ -307,14 +347,14 @@ photoInput.addEventListener("change", (event) => {
       iconAddImage.style.display = 'none';
       jpgPngSize.style.display = 'none';
       ajouterPhotoBtn.style.display = 'none';
-    };
-                }
-        });
+  };
+    }
+      });
 
 //------------------------Envoi à l'API----------------
 
 // Fonction pour rafraîchir la galerie
-function refreshGallery() {
+/*function refreshGallery() {
   fetch('http://localhost:5678/api/works')
     .then(response => response.json())
     .then(data => {
@@ -324,7 +364,20 @@ function refreshGallery() {
     .catch(error => {
       console.error(error);
     });
+  }*/
+
+  async function refreshGallery(works) {
+    try {
+      const response = await fetch('http://localhost:5678/api/works');
+      const data = await response.json();
+      
+      works = data;
+      getGallery(works);
+    } catch (error) {
+      console.error(error);
+    }
   }
+  
 //Définition de works.push(works)
 const newWork = {
   id: 0,
@@ -337,6 +390,7 @@ const newWork = {
 // Fonction pour ajouter un travail à la galerie
 function addWorkToGallery(works) {
   getGallery(works);
+  refreshGallery(works);
 }
 
 validationButton.addEventListener("click", () => {
@@ -364,22 +418,25 @@ validationButton.addEventListener("click", () => {
         console.log(titreInput.value);
         console.log(categorieSelect.value);
         console.log(photoInput.files);
-        refreshGallery(); // Mettre à jour la galerie après l'ajout d'un nouveau travail
+        refreshGallery(works); // Mettre à jour la galerie après l'ajout d'un nouveau travail
       } else {
-        throw new Error("La réponse du réseau n'était pas correcte");
+        // Afficher un message d'erreur approprié
+        throw new Error("Erreur lors de l'ajout du travail");
       }
     })
     .catch(error => {
       console.error(error);
     });
 });
+
 // --------------------------------------------------------------------
 getWorks()
   .then(data => {
     works = data;
     getGallery(works);
     addFilterListeners(works);
-    refreshGallery(data);
+    createGallery(data);
+    refreshGallery(works);
     addWorkToGallery(works);
 });
 
