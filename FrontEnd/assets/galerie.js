@@ -12,8 +12,7 @@ const photoInput = document.getElementById("photo-input");
 const newImage = document.getElementById("new-image");
 const titreInput = document.querySelector("#modal2 input[type=text]");
 const categorieSelect = document.querySelector("#modal2 select");
-//Vérifiez si l'utilisateur est connecté
-/*const handleLogin = true;*/
+
 
 // ******************** VARIABLES ********************
 // ***************************************************
@@ -24,6 +23,7 @@ let token = localStorage.getItem('token');
 
 // ******************** FONCTIONS ********************
 //**************************************************** 
+
 
 // Faire appel à mon API avec fetch
 async function getWorks() {
@@ -37,6 +37,7 @@ async function getWorks() {
     throw error;
   }
 }
+
 
 // Création de la galerie via le DOM
 function getGallery(works) {
@@ -60,8 +61,8 @@ function getGallery(works) {
 
     gallery.appendChild(workItem); 
   });
-  
 }
+
 
 //Création des filtres
 function addFilterListeners(works) {
@@ -99,6 +100,7 @@ function addFilterListeners(works) {
   });
 }
 
+
 //Événement pour ouvrir les modal&-2
 function addAllEventListeners() {
   const backToModal1 = document.querySelector('.back');
@@ -109,8 +111,7 @@ function addAllEventListeners() {
   exitModal2.addEventListener('click', toExiFromtModal2);
   modal1Btn.addEventListener('click', openModalByButton);
   modal1.addEventListener('click', toHideModal1);
-
-  // Appel de la fonction addExitButtonClickHandler()
+  
   addExitButtonClickHandler();
 }
 
@@ -119,6 +120,7 @@ function openModalByButton(event) {
   event.preventDefault();
   modal1.style.display = 'block';
 }
+
 /*Evénement pour chaché la modal1*/
 function toHideModal1(event) {
   const modalWrapper = document.querySelectorAll('.modal-wrapper');
@@ -126,18 +128,21 @@ function toHideModal1(event) {
     toHideModal1();
   }
 }
+
 /*Evénement pour ouvrir à la modal2*/
 function openFormToAddProject(event) {
   event.preventDefault();
   modal1.style.display = "none";
   modal2.style.display = "block";
 }
+
 /*Evénemen pour retourner à la modal1*/
 function goBackToProjectManager(event) {
   event.preventDefault();
   modal2.style.display = "none";
   modal1.style.display = "block";
 }
+
 /*Événement pour masquer la modal2*/
 function toExiFromtModal2(event) {
   event.preventDefault()
@@ -156,8 +161,8 @@ function addExitButtonClickHandler() {
 addExitButtonClickHandler();
 addAllEventListeners();
 
-//Gestion de la galerie de la Modal1
-//********************************** 
+//Gestion de la galerie de la Modal1 / Pour DELETE
+//************************************************
 
 modal1Works.innerHTML = '';
 /*Fonction pour créer la galerie à partir des données récupérées*/
@@ -204,6 +209,7 @@ function createGallery(data) {
           method: 'DELETE',
           headers: {
             Accept: "application/json",
+            
             Authorization: `Bearer ${token}`,
           },
         })
@@ -236,9 +242,18 @@ getWorks()
     createGallery(data);
   });
 
+
+
 //Envoi à l'API / fetch post
-/*************************** 
+//***************************
  
+
+const newPhotoInput = document.getElementById("photo-input");
+const titleInput = document.querySelector(".titre");
+const categorySelect = document.getElementById("choix");
+let file;
+
+
 /*Fonction pour rafraîchir la galerie*/
 async function refreshGallery() {
   try {
@@ -250,6 +265,20 @@ async function refreshGallery() {
     console.error(error);
   }
 }
+
+newPhotoInput.addEventListener("change", (event) => {
+  file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      const img = document.getElementById("new-image");
+      img.src = reader.result;
+    };
+  }
+});
+
 
 const validationButton = document.querySelector(".validation");
 validationButton.addEventListener("click", async () => {
@@ -268,7 +297,7 @@ validationButton.addEventListener("click", async () => {
   console.log(formData);
   console.log(token);
 
-  fetch('http://localhost:5678/api-docs/#/default/post_works', {
+  fetch("http://localhost:5678/api/works", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -276,7 +305,7 @@ validationButton.addEventListener("click", async () => {
     },
     body: formData,
   })
-    .then(response => {
+    .then((response) => {
       if (response.ok) {
 
         console.log(works);
@@ -287,7 +316,8 @@ validationButton.addEventListener("click", async () => {
       }
 
     })
-    .catch(error => {
+    .catch((error) => {
+      // Traitement de l'erreur
       console.error(error);
     });
 });
@@ -301,7 +331,7 @@ getWorks()
     refreshGallery();
     /*addWorkToGallery(works);*/
   });
-
+  
 
 // ******************** CODE PRINCIPAL ********************
 //********************************************************* 
