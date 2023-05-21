@@ -21,19 +21,16 @@ const categorieSelect = document.querySelector("#modal2 select");
 let works = getWorks();
 let token = localStorage.getItem('token');
 
+
 // ******************** FONCTIONS ********************
 //**************************************************** 
 
 // Faire appel à mon API avec fetch
-
-
 async function getWorks() {
   try {
     const response = await fetch('http://localhost:5678/api/works');
     const data = await response.json();
-    /* getGallery(data);
-    addFilterListeners(data);
-    addWorkToGallery(data);*/
+   
     return data;
   } catch (error) {
     console.error(error);
@@ -41,12 +38,11 @@ async function getWorks() {
   }
 }
 
-
 // Création de la galerie via le DOM
 function getGallery(works) {
 
   const gallery = document.querySelector('.gallery');
-  gallery.innerHTML = ''; // Effacer le contenu de la galerie précédente
+  gallery.innerHTML = ''; 
 
   works.forEach(work => {
     const workItem = document.createElement('div');
@@ -62,9 +58,9 @@ function getGallery(works) {
     workItem.appendChild(workImage);
     workItem.appendChild(workTitle);
 
-    gallery.appendChild(workItem); // Ajouter chaque élément à la galerie
+    gallery.appendChild(workItem); 
   });
-  // Mettre à jour le tableau works avec les nouvelles données
+  
 }
 
 //Création des filtres
@@ -72,16 +68,16 @@ function addFilterListeners(works) {
   const boutonTous = document.querySelector(".filter-tous");
 
   boutonTous.addEventListener("click", function () {
-    getGallery(works); // Afficher tous les éléments
+    getGallery(works); 
   });
 
   const boutonObjets = document.querySelector(".filter-objets");
 
   boutonObjets.addEventListener("click", function () {
     const filterObjects = works.filter(function (work) {
-      return work.category.id === 1; // Filtrer les éléments par catégorie
+      return work.category.id === 1; 
     });
-    getGallery(filterObjects); // Afficher les éléments filtrés
+    getGallery(filterObjects); 
   });
 
   const boutonAppartement = document.querySelector(".filter-appartements");
@@ -107,8 +103,6 @@ function addFilterListeners(works) {
 function addAllEventListeners() {
   const backToModal1 = document.querySelector('.back');
   const exitModal2 = document.querySelector(".exit2");
-  /*const validationBtn = document.querySelector('.validation');
-  validationBtn.addEventListener('click', submitForm);*/
 
   ajouterPhoto.addEventListener("click", openFormToAddProject);
   backToModal1.addEventListener('click', goBackToProjectManager);
@@ -159,27 +153,13 @@ function addExitButtonClickHandler() {
     });
   });
 }
-
-// Appel de la fonction addExitButtonClickHandler() 
-//pour ajouter les gestionnaires de clic sur les boutons de sortie
 addExitButtonClickHandler();
 addAllEventListeners();
 
 //Gestion de la galerie de la Modal1
 //********************************** 
-modal1Works.innerHTML = '';
-/*async function fetchData() {
-  try {
-    const response = await fetch('http://localhost:5678/api/works');
-    const data = await response.json();
-    console.log(data); // Afficher la réponse de l'API dans la console
-    return data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}*/
 
+modal1Works.innerHTML = '';
 /*Fonction pour créer la galerie à partir des données récupérées*/
 function createGallery(data) {
   const modal1Works = document.querySelector('.images-works');
@@ -250,13 +230,11 @@ function createGallery(data) {
     });
   });
 }
-// Appeler les fonctions fetchData() et 
-//createGallery() pour récupérer les données et créer la galerie
+
 getWorks()
   .then(data => {
     createGallery(data);
   });
-
 
 //Envoi à l'API / fetch post
 /*************************** 
@@ -267,48 +245,30 @@ async function refreshGallery() {
     const response = await fetch('http://localhost:5678/api/works');
     const data = await response.json();
 
-
     getGallery(data)
   } catch (error) {
     console.error(error);
   }
 }
 
-/*Définition de works.push(works)*/
-/*const newWork = {
-  id: 0,
-  imageUrl: photoInput.files[0],
-  title: titreInput.value,
-  categoryId: categorieSelect.value,
-  userId: 0
-};*/
-
-/*Fonction pour ajouter un travail à la galerie*/
-/*function addWorkToGallery(works) {
-  getGallery(works);
-  refreshGallery(works);
-}*/
 const validationButton = document.querySelector(".validation");
-validationButton.addEventListener("click", () => {
+validationButton.addEventListener("click", async () => {
+  console.log('bouton validé');
 
-  console.log('boutton validé')
   if (titreInput.value === '' || categorieSelect.value === '' || photoInput.files.length === 0) {
-
-
-    //Afficher un message d'erreur
+    // Afficher un message d'erreur
     alert('Veuillez remplir tous les champs obligatoires');
     return;
   }
-  const formData = new FormData();
 
+  const formData = new FormData();
   formData.append("titre", titreInput.value);
   formData.append("categorie", categorieSelect.value);
   formData.append("photo", photoInput.files[0]);
   console.log(formData);
-
   console.log(token);
 
-  fetch("http://localhost:5678/api-docs/#/default/post_works", {
+  fetch('http://localhost:5678/api-docs/#/default/post_works', {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -332,7 +292,6 @@ validationButton.addEventListener("click", () => {
     });
 });
 
-
 getWorks()
   .then(data => {
     works = data;
@@ -342,12 +301,6 @@ getWorks()
     refreshGallery();
     /*addWorkToGallery(works);*/
   });
-
-
-
-
-
-
 
 
 // ******************** CODE PRINCIPAL ********************
@@ -374,7 +327,6 @@ if (localStorage.getItem("token")) {
   document.querySelector('.logout-btn').style.display = 'none';
   document.querySelector('.login-btn').style.display = 'block';
 }
-
 
 let logoutBtn = document.getElementById('logout-btn');
 logoutBtn.addEventListener('click', handleLogout);
@@ -409,7 +361,7 @@ photoInput.addEventListener("change", (event) => {
     };
   }
 });
-  //**********************************************************
+//**********************************************************
 
 
 
