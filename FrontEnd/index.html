@@ -61,14 +61,14 @@
 					<button class="exit"><i class="fa-solid fa-xmark"></i></button>
 					<h3 id="titlemodal">Galerie photo</h3>
 					<div class="images-works">
-					</div>
+		</div>
 					<ul>
 						<li class="ajouter-photo"><a href="#modal2">Ajouter une photo</a></li>
 						<li class="supprimer-galerie"></li><a href="#" onclick="openModal()">Supprimer la galerie</a>
 						</li>
 						</li>
 					</ul>
-				</div>
+		</div>
 			</aside>
 			<!------------------------- fin modal1 ------------->
 			<!-----------------------  debut modal2 -------------------->
@@ -83,26 +83,26 @@
 					<i class="fa-sharp fa-regular fa-image"></i>
 					<img id="new-image" src="" alt="">
 					<label class="ajout-photo" for="photo-input">
-						<i class="fa-solid fa-plus"></i>Ajouter photo
+					  <i class="fa-solid fa-plus"></i>Ajouter photo
 					</label>
 					<input type="file" id="photo-input" accept="image/jpeg,image/png" style="display:none;">
-
+				  
 					<small class="limit-size">jpg.png : 40mo max</small>
-				</div>
-
-				<div class="selection-photo">
+						</div>
+				  
+				  <div class="selection-photo">
 					<label class="label-titre" for="titre">Titre
 						<input class="titre" type="text"></label>
 					<label class="label-categorie" for="categorie">Catégorie
-						<select id="choix" name="choix">
-							<option value="objets">Objets</option>
-							<option value="appartemments">Appartemments</option>
+					  <select id="choix" name="choix">
+						<option value="objets">Objets</option>
+						<option value="appartemments">Appartemments</option>
 							<option value="hôtel-restaurants">Hôtel & Restaurants</option></label>
-					</select>
+						</select>
 				</div>
-				<div class="validation-photo">
+				  <div class="validation-photo">
 					<button class="validation">Validation</button>
-				</div>
+			</div>
 			</section>
 			<!-----------------------  Fin modal2 -------------------->
 			<div class="filters">
@@ -113,50 +113,6 @@
 					Restaurant</button>
 			</div>
 			<div class="gallery">
-				<!--<figure>
-					<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-					<figcaption>Abajour Tahina</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-					<figcaption>Appartement Paris V</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-					<figcaption>Restaurant Sushisen - Londres</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-					<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-					<figcaption>Structures Thermopolis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-					<figcaption>Appartement Paris X</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-					<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-					<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-					<figcaption>Appartement Paris XVIII</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-					<figcaption>Bar “Lullaby” - Paris</figcaption>
-				</figure>
-				<figure>
-					<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-					<figcaption>Hotel First Arte - New Delhi</figcaption>
-				</figure>-->
 			</div>
 		</section>
 		<section id="contact">
@@ -180,7 +136,8 @@
 			</ul>
 		</nav>
 	</footer>
-	<script src="assets/galerie.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="./assets/galerie.js" type="module"></script>
 </body>
 
 </html>

@@ -2,6 +2,8 @@
 
 // ******************** CONSTANTES ********************
 // ****************************************************
+// Utiliser axios sans la syntaxe require
+const axiosInstance = axios.create();
 const modal1Btn = document.querySelector('.js-modal');
 const modal1 = document.querySelector('#modal1');
 const ajouterPhoto = document.querySelector(".ajouter-photo a");
@@ -9,35 +11,31 @@ const modal2 = document.querySelector('#modal2');
 const topEdition = document.querySelector('.top-edition');
 const modal1Works = document.querySelector('.images-works');
 const photoInput = document.getElementById("photo-input");
-const newImage = document.getElementById("new-image");
-const titreInput = document.querySelector("#modal2 input[type=text]");
-const categorieSelect = document.querySelector("#modal2 select");
-
+const image = document.getElementById("new-image");
+const title = document.querySelector("#modal2 input[type=text]");
+const category = document.querySelector("#modal2 select");
 
 // ******************** VARIABLES ********************
 // ***************************************************
 
-let works = getWorks();
 let token = localStorage.getItem('token');
-
 
 // ******************** FONCTIONS ********************
 //**************************************************** 
 
-
 // Faire appel à mon API avec fetch
 async function getWorks() {
   try {
-    const response = await fetch('http://localhost:5678/api/works');
-    const data = await response.json();
-   
+    const response = await axios.get('http://localhost:5678/api/works');
+    const data = response.data;
+
     return data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-
+let works = getWorks();
 
 // Création de la galerie via le DOM
 function getGallery(works) {
@@ -62,7 +60,6 @@ function getGallery(works) {
     gallery.appendChild(workItem); 
   });
 }
-
 
 //Création des filtres
 function addFilterListeners(works) {
@@ -100,7 +97,6 @@ function addFilterListeners(works) {
   });
 }
 
-
 //Événement pour ouvrir les modal&-2
 function addAllEventListeners() {
   const backToModal1 = document.querySelector('.back');
@@ -110,7 +106,7 @@ function addAllEventListeners() {
   backToModal1.addEventListener('click', goBackToProjectManager);
   exitModal2.addEventListener('click', toExiFromtModal2);
   modal1Btn.addEventListener('click', openModalByButton);
-  modal1.addEventListener('click', toHideModal1);
+  modal1.addEventListener('click', hideModal1);
   
   addExitButtonClickHandler();
 }
@@ -122,10 +118,10 @@ function openModalByButton(event) {
 }
 
 /*Evénement pour chaché la modal1*/
-function toHideModal1(event) {
+function hideModal1(event) {
   const modalWrapper = document.querySelectorAll('.modal-wrapper');
   if (event.target === modalWrapper[0]) {
-    toHideModal1();
+    hideModal1();
   }
 }
 
@@ -165,6 +161,7 @@ addAllEventListeners();
 //************************************************
 
 modal1Works.innerHTML = '';
+
 /*Fonction pour créer la galerie à partir des données récupérées*/
 function createGallery(data) {
   const modal1Works = document.querySelector('.images-works');
@@ -243,24 +240,20 @@ getWorks()
   });
 
 
-
-//Envoi à l'API / fetch post
+//Envoi à l'API / axios post
 //***************************
- 
 
 const newPhotoInput = document.getElementById("photo-input");
 const titleInput = document.querySelector(".titre");
 const categorySelect = document.getElementById("choix");
 let file;
 
-
-/*Fonction pour rafraîchir la galerie*/
+/* Fonction pour rafraîchir la galerie */
 async function refreshGallery() {
   try {
-    const response = await fetch('http://localhost:5678/api/works');
-    const data = await response.json();
-
-    getGallery(data)
+    const response = await axios.get("http://localhost:5678/api/works");
+    const data = response.data;
+    getGallery(data);
   } catch (error) {
     console.error(error);
   }
@@ -278,52 +271,54 @@ newPhotoInput.addEventListener("change", (event) => {
     };
   }
 });
-
-
-const validationButton = document.querySelector(".validation");
+const validationButton = document.querySelector(".validation")
 validationButton.addEventListener("click", async () => {
-  console.log('bouton validé');
+  console.log("bouton validé");
 
-  if (titreInput.value === '' || categorieSelect.value === '' || photoInput.files.length === 0) {
+  if (
+    titleInput.value === "" ||
+    categorySelect.value === "" ||
+    newPhotoInput.files.length === 0
+  ) {
     // Afficher un message d'erreur
-    alert('Veuillez remplir tous les champs obligatoires');
+    alert("Veuillez remplir tous les champs obligatoires");
     return;
   }
 
-  const formData = new FormData();
-  formData.append("titre", titreInput.value);
-  formData.append("categorie", categorieSelect.value);
-  formData.append("photo", photoInput.files[0]);
+  let formData = new FormData();
+  formData.append("titre", titleInput.value);
+  formData.append("categorie", categorySelect.value);
+  formData.append("photo", file);
   console.log(formData);
   console.log(token);
 
-  fetch("http://localhost:5678/api/works", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  })
-    .then((response) => {
-      if (response.ok) {
+  formData = JSON.stringify(formData);
+  console.log(formData);
 
-        console.log(works);
-        refreshGallery();// Mettre à jour la galerie après l'ajout d'un nouveau travail
-      } else {
-        // Afficher un message d'erreur approprié
-        throw new Error("Erreur lors de l'ajout du travail");
-      }
-
-    })
-    .catch((error) => {
-      // Traitement de l'erreur
-      console.error(error);
+  try {
+    const response = await axios.post('http://localhost:5678/api/works', formData, {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
     });
+
+    if (response.status === 200) {
+      refreshGallery(); // Mettre à jour la galerie après l'ajout d'un nouveau travail
+    } else {
+      // Afficher un message d'erreur approprié
+      throw new Error("Erreur lors de l'ajout du travail");
+    }
+  } catch (error) {
+    // Traitement de l'erreur
+    console.error(error);
+  }
 });
 
+
 getWorks()
-  .then(data => {
+  .then((data) => {
     works = data;
     getGallery(works);
     addFilterListeners(works);
@@ -331,6 +326,8 @@ getWorks()
     refreshGallery();
     /*addWorkToGallery(works);*/
   });
+
+
   
 
 // ******************** CODE PRINCIPAL ********************
@@ -371,7 +368,7 @@ function toggleTopEdition() {
 // ********************************************************
 // Recupération image dans dossier
 
-photoInput.addEventListener("change", (event) => {
+newPhotoInput.addEventListener("change", (event) => {
   /*const iconePlus = document.querySelector('.fa-plus');*/
   const iconAddImage = document.querySelector('.fa-image')
   const jpgPngSize = document.querySelector(".limit-size");
@@ -381,9 +378,9 @@ photoInput.addEventListener("change", (event) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      newImage.src = reader.result;
-      newImage.style.width = '200px';
-      photoInput.style.display = 'none';
+      image.src = reader.result;
+      image.style.width = '200px';
+      newPhotoInput.style.display = 'none';
       /*iconePlus.style.visibility = 'hidden';*/
       iconAddImage.style.display = 'none';
       jpgPngSize.style.display = 'none';
@@ -392,6 +389,4 @@ photoInput.addEventListener("change", (event) => {
   }
 });
 //**********************************************************
-
-
 
