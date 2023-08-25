@@ -2,8 +2,6 @@
 
 // ******************** CONSTANTES ********************
 // ****************************************************
-// Utiliser axios sans la syntaxe require
-const axiosInstance = axios.create();
 const modal1Btn = document.querySelector('.js-modal');
 const modal1 = document.querySelector('#modal1');
 const ajouterPhoto = document.querySelector(".ajouter-photo a");
@@ -11,14 +9,18 @@ const modal2 = document.querySelector('#modal2');
 const topEdition = document.querySelector('.top-edition');
 const modal1Works = document.querySelector('.images-works');
 const photoInput = document.getElementById("photo-input");
-const image = document.getElementById("new-image");
-const title = document.querySelector("#modal2 input[type=text]");
-const category = document.querySelector("#modal2 select");
+const newImage = document.getElementById("new-image");
+const titreInput = document.querySelector("#modal2 input[type=text]");
+const categorieSelect = document.querySelector("#modal2 select");
+//Vérifiez si l'utilisateur est connecté
+/*const handleLogin = true;*/
 
 // ******************** VARIABLES ********************
 // ***************************************************
 
+let works = getWorks();
 let token = localStorage.getItem('token');
+
 
 // ******************** FONCTIONS ********************
 //**************************************************** 
@@ -26,22 +28,21 @@ let token = localStorage.getItem('token');
 // Faire appel à mon API avec fetch
 async function getWorks() {
   try {
-    const response = await axios.get('http://localhost:5678/api/works');
-    const data = response.data;
-
+    const response = await fetch('http://localhost:5678/api/works');
+    const data = await response.json();
     return data;
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
-let works = getWorks();
+
 
 // Création de la galerie via le DOM
+// Refactorisation de la fonction pour utiliser DocumentFragment au lieu de mettre à jour le DOM à plusieurs reprises
 function getGallery(works) {
-
   const gallery = document.querySelector('.gallery');
-  gallery.innerHTML = ''; 
+  const fragment = document.createDocumentFragment();
 
   works.forEach(work => {
     const workItem = document.createElement('div');
@@ -57,45 +58,30 @@ function getGallery(works) {
     workItem.appendChild(workImage);
     workItem.appendChild(workTitle);
 
-    gallery.appendChild(workItem); 
+    fragment.appendChild(workItem);
   });
+
+  gallery.innerHTML = '';
+  gallery.appendChild(fragment);
 }
+
 
 //Création des filtres
+// Refactoring de la fonction pour la rendre plus rapide et efficace
 function addFilterListeners(works) {
-  const boutonTous = document.querySelector(".filter-tous");
+  // Création d'une fonction galerie qui filtre les oeuvres par catégorie
+  const galerie = (filtre) => {
+    const oeuvresFiltrees = works.filter((oeuvre) => oeuvre.category.id === filtre);
+    getGallery(oeuvresFiltrees);
+  };
 
-  boutonTous.addEventListener("click", function () {
-    getGallery(works); 
-  });
-
-  const boutonObjets = document.querySelector(".filter-objets");
-
-  boutonObjets.addEventListener("click", function () {
-    const filterObjects = works.filter(function (work) {
-      return work.category.id === 1; 
-    });
-    getGallery(filterObjects); 
-  });
-
-  const boutonAppartement = document.querySelector(".filter-appartements");
-
-  boutonAppartement.addEventListener("click", function () {
-    const filterAppartement = works.filter(function (work) {
-      return work.category.id === 2;
-    });
-    getGallery(filterAppartement);
-  });
-
-  const boutonHotelRestaurants = document.querySelector(".filter-hotel-restaurants");
-
-  boutonHotelRestaurants.addEventListener("click", function () {
-    const filterHotelRestaurants = works.filter(function (work) {
-      return work.category.id === 3;
-    });
-    getGallery(filterHotelRestaurants);
-  });
+  // Ajout des écouteurs d'événements aux boutons de filtres
+  document.querySelector(".filter-tous").addEventListener("click", () => getGallery(works));
+  document.querySelector(".filter-objets").addEventListener("click", () => galerie(1));
+  document.querySelector(".filter-appartements").addEventListener("click", () => galerie(2));
+  document.querySelector(".filter-hotel-restaurants").addEventListener("click", () => galerie(3));
 }
+
 
 //Événement pour ouvrir les modal&-2
 function addAllEventListeners() {
@@ -106,8 +92,9 @@ function addAllEventListeners() {
   backToModal1.addEventListener('click', goBackToProjectManager);
   exitModal2.addEventListener('click', toExiFromtModal2);
   modal1Btn.addEventListener('click', openModalByButton);
-  modal1.addEventListener('click', hideModal1);
-  
+  modal1.addEventListener('click', toHideModal1);
+
+  // Appel de la fonction addExitButtonClickHandler()
   addExitButtonClickHandler();
 }
 
@@ -116,29 +103,25 @@ function openModalByButton(event) {
   event.preventDefault();
   modal1.style.display = 'block';
 }
-
 /*Evénement pour chaché la modal1*/
-function hideModal1(event) {
+function toHideModal1(event) {
   const modalWrapper = document.querySelectorAll('.modal-wrapper');
   if (event.target === modalWrapper[0]) {
-    hideModal1();
+    toHideModal1();
   }
 }
-
 /*Evénement pour ouvrir à la modal2*/
 function openFormToAddProject(event) {
   event.preventDefault();
   modal1.style.display = "none";
   modal2.style.display = "block";
 }
-
 /*Evénemen pour retourner à la modal1*/
 function goBackToProjectManager(event) {
   event.preventDefault();
   modal2.style.display = "none";
   modal1.style.display = "block";
 }
-
 /*Événement pour masquer la modal2*/
 function toExiFromtModal2(event) {
   event.preventDefault()
@@ -157,11 +140,10 @@ function addExitButtonClickHandler() {
 addExitButtonClickHandler();
 addAllEventListeners();
 
-//Gestion de la galerie de la Modal1 / Pour DELETE
-//************************************************
+//Gestion de la galerie de la Modal1
+//********************************** 
 
 modal1Works.innerHTML = '';
-
 /*Fonction pour créer la galerie à partir des données récupérées*/
 function createGallery(data) {
   const modal1Works = document.querySelector('.images-works');
@@ -170,7 +152,9 @@ function createGallery(data) {
   data.forEach((work, index) => {
     const workDiv = document.createElement('div');
     workDiv.classList.add('gallery-works');
-    workDiv.dataset.id = work._id;
+    
+
+    workDiv.dataset.id = work.id;
 
     const image = document.createElement('img');
     image.src = work.imageUrl;
@@ -185,150 +169,122 @@ function createGallery(data) {
     workDiv.appendChild(image);
     workDiv.appendChild(title);
 
-    /*Vérifier si nous sommes en train de créer le premier élément de la galerie*/
     if (index === 0) {
       const arrowsIcon = document.createElement('i');
       arrowsIcon.classList.add('fa-solid', 'fa-arrows-up-down-left-right');
-      image.parentNode.insertBefore(arrowsIcon, image);
+      image.before(arrowsIcon);
       workDiv.style.height = '191px';
     }
 
     workDiv.appendChild(deleteIcon);
     modal1Works.appendChild(workDiv);
 
-    /*Supprimer work au clic sur l'icône de suppression*/
     deleteIcon.addEventListener('click', function (event) {
       if (event.target === deleteIcon) {
         const workDiv = event.target.closest('.gallery-works');
         const workId = workDiv.dataset.id;
-
-        fetch('http://localhost:5678/api/works/' + workId, {
+        console.log(workDiv);
+        console.log(workDiv.dataset);
+        fetch(`http://localhost:5678/api/works/${workId}`, {
           method: 'DELETE',
           headers: {
             Accept: "application/json",
-            
             Authorization: `Bearer ${token}`,
           },
         })
-          .then(response => {
-            if (response.ok) {
-              workDiv.remove();
-            } else {
-              throw new Error('Erreur de suppression');
-            }
-          })
-          .then(() => {
-            /* Mettre à jour la galerie après la suppression*/
+        .then(response => {
+          if (response.ok) {
+            workDiv.remove();
+            /* Mise à jour de la galerie après la suppression */
             const worksOfModal1 = Array.from(document.querySelectorAll('.gallery-works')).map(workDiv => ({
               _id: workDiv.dataset.id,
               imageUrl: workDiv.querySelector('img').src,
               title: workDiv.querySelector('h4').innerText
             }));
             getGallery(worksOfModal1);
-          })
-          .catch(error => {
-            console.error(error);
-          });
+          } else {
+            throw new Error('Erreur de suppression');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
       }
     });
   });
 }
+
 
 getWorks()
   .then(data => {
     createGallery(data);
   });
 
+//Envoi à l'API / fetch post
+/***************************/
+const importPhotoDiv = document.querySelector('.import-photo');
+const ajoutPhotoLabel = document.querySelector('.ajout-photo');
+const limitSizeSmall = document.querySelector('.limit-size');
+const selectionPhotoDiv = document.querySelector('.selection-photo');
+const choixSelect = document.querySelector('#choix');
+const validationPhotoDiv = document.querySelector('.validation-photo');
 
-//Envoi à l'API / axios post
-//***************************
+const validationButton = document.querySelector('.validation');
 
-const newPhotoInput = document.getElementById("photo-input");
-const titleInput = document.querySelector(".titre");
-const categorySelect = document.getElementById("choix");
-let file;
+validationButton.addEventListener('click', async () => {
+  // Récupérer les entrées du formulaire
+  const titreInput = document.querySelector('.titre');
+  const categorieSelect = document.querySelector('#choix');
+  const photoInput = document.querySelector('#photo-input');
 
-/* Fonction pour rafraîchir la galerie */
-async function refreshGallery() {
-  try {
-    const response = await axios.get("http://localhost:5678/api/works");
-    const data = response.data;
-    getGallery(data);
-  } catch (error) {
-    console.error(error);
-  }
-}
+  console.log('Titre input:', titreInput.value);
+  console.log('Categorie select:', categorieSelect.value);
+  console.log('Photo input files:', photoInput.files);
 
-newPhotoInput.addEventListener("change", (event) => {
-  file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
+  // Créer un objet FormData avec les données du formulaire
+  const formData = new FormData();
+  formData.append('image', photoInput.files[0]);
+  formData.append('title', titreInput.value);
+  formData.append('category', categorieSelect.value);
+  console.log('Form data:', formData);
 
-    reader.onload = () => {
-      const img = document.getElementById("new-image");
-      img.src = reader.result;
-    };
-  }
-});
-const validationButton = document.querySelector(".validation")
-validationButton.addEventListener("click", async () => {
-  console.log("bouton validé");
+  // Envoyer une requête POST à l'API
+  const response = await fetch('http://localhost:5678/api/works', {
+    method: 'POST',
+    headers: {
+      'accept': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
 
-  if (
-    titleInput.value === "" ||
-    categorySelect.value === "" ||
-    newPhotoInput.files.length === 0
-  ) {
+  console.log('Response:', response);
+
+  // Traiter la réponse de l'API
+  if (response.ok) {
+    const newElement = await response.json();
+    console.log('New element:', newElement);
+    // Ajouter le nouvel élément à la galerie
+    // ...
+  } else {
     // Afficher un message d'erreur
-    alert("Veuillez remplir tous les champs obligatoires");
-    return;
-  }
-
-  let formData = new FormData();
-  formData.append("titre", titleInput.value);
-  formData.append("categorie", categorySelect.value);
-  formData.append("photo", file);
-  console.log(formData);
-  console.log(token);
-
-  formData = JSON.stringify(formData);
-  console.log(formData);
-
-  try {
-    const response = await axios.post('http://localhost:5678/api/works', formData, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.status === 200) {
-      refreshGallery(); // Mettre à jour la galerie après l'ajout d'un nouveau travail
-    } else {
-      // Afficher un message d'erreur approprié
-      throw new Error("Erreur lors de l'ajout du travail");
-    }
-  } catch (error) {
-    // Traitement de l'erreur
-    console.error(error);
+    console.error('Erreur lors de l\'ajout du nouvel élément');
   }
 });
+
+
 
 
 getWorks()
-  .then((data) => {
+  .then(data => {
     works = data;
     getGallery(works);
     addFilterListeners(works);
     createGallery(data);
-    refreshGallery();
+    /*refreshGallery();*/
     /*addWorkToGallery(works);*/
   });
 
-
-  
 
 // ******************** CODE PRINCIPAL ********************
 //********************************************************* 
@@ -368,7 +324,7 @@ function toggleTopEdition() {
 // ********************************************************
 // Recupération image dans dossier
 
-newPhotoInput.addEventListener("change", (event) => {
+photoInput.addEventListener("change", (event) => {
   /*const iconePlus = document.querySelector('.fa-plus');*/
   const iconAddImage = document.querySelector('.fa-image')
   const jpgPngSize = document.querySelector(".limit-size");
@@ -378,9 +334,9 @@ newPhotoInput.addEventListener("change", (event) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      image.src = reader.result;
-      image.style.width = '200px';
-      newPhotoInput.style.display = 'none';
+      newImage.src = reader.result;
+      newImage.style.width = '200px';
+      photoInput.style.display = 'none';
       /*iconePlus.style.visibility = 'hidden';*/
       iconAddImage.style.display = 'none';
       jpgPngSize.style.display = 'none';
@@ -389,4 +345,5 @@ newPhotoInput.addEventListener("change", (event) => {
   }
 });
 //**********************************************************
+
 
