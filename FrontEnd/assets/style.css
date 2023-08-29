@@ -475,7 +475,8 @@ h3 {
 }*/
 
 #modal1 .modal-wrapper {
-    width: 650px;
+
+    width: 600px;
     margin: 0 auto;
     background-color: white;
     border-radius: 10px;
@@ -555,10 +556,10 @@ a {
     font-weight: 200;
     border-bottom: 0.2px solid rgb(61, 61, 61);
     margin: 0;
-    margin-left: 55px;
-    place-content: center;
+    margin-left: 70px;
+   
     align-items: center;
-
+    
 }
 
 .gallery-works {
