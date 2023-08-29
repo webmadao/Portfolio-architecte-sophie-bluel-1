@@ -549,14 +549,14 @@ a {
 
 .images-works {
     padding: 20px;
-    width: 500px;
+    width: 600px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     font-weight: 200;
     border-bottom: 0.2px solid rgb(61, 61, 61);
     margin: 0;
-    margin-left: 70px;
+    margin-left: 10px;
    
     align-items: center;
     
