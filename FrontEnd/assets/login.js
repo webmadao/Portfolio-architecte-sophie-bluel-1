@@ -1,5 +1,4 @@
 "use strict";
-
 const btnLogin = document.querySelector('.login-acces');
 const btnLogout = document.querySelector('.logout-btn');
 
@@ -15,7 +14,7 @@ function handleLogin(event) {
     // Récupération des valeurs des champs email et password
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-
+    
     // Récupération du formulaire "myForm"
     /*const myForm = document.getElementById('myForm');*/
 
@@ -50,6 +49,9 @@ function handleLogin(event) {
             // Redirection vers la page d'accueil si les informations d'identification sont correctes
             window.location.href = 'index.html';
             // Affichage du bouton de déconnexion et masquage du bouton de connexion
+             // Masquer la div "filters"
+    
+            
         })
         .catch(error => {
             // Affichage d'un message d'erreur si les informations d'identification sont incorrectes ou si une erreur inattendue s'est produite

@@ -12,6 +12,7 @@ const photoInput = document.getElementById("photo-input");
 const newImage = document.getElementById("new-image");
 const titreInput = document.querySelector("#modal2 input[type=text]");
 const categorieSelect = document.querySelector("#modal2 select");
+
 //Vérifiez si l'utilisateur est connecté
 /*const handleLogin = true;*/
 
@@ -67,7 +68,6 @@ function getGallery(works) {
 
 
 //Création des filtres
-// Refactoring de la fonction pour la rendre plus rapide et efficace
 function addFilterListeners(works) {
   // Création d'une fonction galerie qui filtre les oeuvres par catégorie
   const galerie = (filtre) => {
@@ -292,7 +292,7 @@ getWorks()
 //Gestion les éléments du login/logout 
 const modifierImageBtn = document.querySelector('.modifier-image');
 const modeEditionBtns = document.querySelectorAll('.mode-edition');
-
+const filtersDiv = document.querySelector('.filters');
 function handleLogout() {
   localStorage.clear();
   location.reload();
@@ -306,6 +306,7 @@ if (localStorage.getItem("token")) {
   modal1Btn.style.display = 'block';
   document.querySelector('.logout-btn').style.display = 'block';
   document.querySelector('.login-btn').style.display = 'none';
+  filtersDiv.style.display = 'none';
 } else {
   document.querySelector('.logout-btn').style.display = 'none';
   document.querySelector('.login-btn').style.display = 'block';
