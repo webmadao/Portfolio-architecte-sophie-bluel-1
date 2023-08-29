@@ -536,7 +536,7 @@ h3 {
     background-color: #0e7663;
     padding: 10px 50px;
     color: #fff;
-    border-radius: 10px;
+    border-radius: 20px;
     font-family: 'Syne';
 }
 
@@ -642,6 +642,7 @@ a {
     border: none;
     cursor: pointer;
 }
+
 
 #modal2 h2 {
     color: #000000;
