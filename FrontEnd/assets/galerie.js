@@ -330,6 +330,7 @@ photoInput.addEventListener("change", (event) => {
   const iconAddImage = document.querySelector('.fa-image')
   const jpgPngSize = document.querySelector(".limit-size");
   const ajouterPhotoBtn = document.querySelector('.ajout-photo');
+  const importSpace = document.querySelector('.import-photo');  
   const file = event.target.files[0];
   if (file) {
     const reader = new FileReader();
@@ -342,6 +343,7 @@ photoInput.addEventListener("change", (event) => {
       iconAddImage.style.display = 'none';
       jpgPngSize.style.display = 'none';
       ajouterPhotoBtn.style.display = 'none';
+      importSpace.style.padding = '0 20px';
     };
   }
 });

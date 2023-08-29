@@ -461,35 +461,32 @@ h3 {
     font-size: 20px;
     color: #000000;
 }
-
+/*
 #modal1 {
-    /*visibility: hidden;*/
+    /*visibility: hidden;
     position: relative;
     left: 0;
     top: 0;
-    width: 100%;
+    width: 80%;
     height: 100%;
     text-align: center;
     z-index: 1000;
     display: none;
-}
+}*/
 
 #modal1 .modal-wrapper {
     width: 650px;
-   /* height: 660px;*/
-    margin: 100px auto;
-    background-color: #ffffff;
+    margin: 0 auto;
+    background-color: white;
     border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     padding: 20px;
     text-align: center;
     font-weight: bold;
     font-size: 15px;
     border: 2px solid #e6e6e6;
-    position: absolute;
-    left: 560px;
-    top: 150px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
@@ -551,7 +548,7 @@ a {
 
 .images-works {
     padding: 20px;
-    width: 550px;
+    width: 500px;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -559,6 +556,7 @@ a {
     border-bottom: 0.2px solid rgb(61, 61, 61);
     margin: 0;
     margin-left: 55px;
+    place-content: center;
     align-items: center;
 
 }
@@ -610,19 +608,17 @@ a {
 
 #modal2 {
     width: 600px;
-    margin: 100px auto;
+    margin: 0 auto;
     background-color: white;
     border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
     padding: 20px;
     text-align: center;
     font-weight: bold;
     font-size: 15px;
     border: 2px solid #e6e6e6;
-    position: absolute;
-    left: 600px;
-    top: 850px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%);
