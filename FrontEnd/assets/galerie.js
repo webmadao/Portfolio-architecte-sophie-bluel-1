@@ -329,7 +329,7 @@ photoInput.addEventListener("change", (event) => {
   /*const iconePlus = document.querySelector('.fa-plus');*/
   const iconAddImage = document.querySelector('.fa-image')
   const jpgPngSize = document.querySelector(".limit-size");
-  const ajouterPhotoBtn = document.querySelector('.ajouter-photo');
+  const ajouterPhotoBtn = document.querySelector('.ajout-photo');
   const file = event.target.files[0];
   if (file) {
     const reader = new FileReader();
