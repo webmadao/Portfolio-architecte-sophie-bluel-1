@@ -13,6 +13,7 @@ const newImage = document.getElementById("new-image");
 const titreInput = document.querySelector("#modal2 input[type=text]");
 const categorieSelect = document.querySelector("#modal2 select");
 
+
 //Vérifiez si l'utilisateur est connecté
 /*const handleLogin = true;*/
 
@@ -81,6 +82,22 @@ function addFilterListeners(works) {
   document.querySelector(".filter-appartements").addEventListener("click", () => galerie(2));
   document.querySelector(".filter-hotel-restaurants").addEventListener("click", () => galerie(3));
 }
+
+const filterButtons = document.querySelectorAll('.filters button');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        // Supprimer la classe 'active' de tous les boutons
+        filterButtons.forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Ajouter la classe 'active' au bouton cliqué
+        button.classList.add('active');
+    });
+});
+
+
 
 
 //Événement pour ouvrir les modal&-2
