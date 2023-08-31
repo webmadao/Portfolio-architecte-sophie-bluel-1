@@ -431,13 +431,11 @@ main {
 
 /* Style pour le bouton de connexion */
 #login-button {
-    background-color: #1D6154;
     color: #fff;
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
     text-align: center;
 }
 
