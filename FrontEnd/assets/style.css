@@ -461,18 +461,11 @@ h3 {
     font-size: 20px;
     color: #000000;
 }
-/*
+
 #modal1 {
-    /*visibility: hidden;
-    position: relative;
-    left: 0;
-    top: 0;
-    width: 80%;
-    height: 100%;
-    text-align: center;
-    z-index: 1000;
+    
     display: none;
-}*/
+}
 
 #modal1 .modal-wrapper {
 
