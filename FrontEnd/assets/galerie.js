@@ -254,9 +254,12 @@ validationButton.addEventListener('click', async () => {
   const categorieSelect = document.querySelector('#choix');
   const photoInput = document.querySelector('#photo-input');
 
-  console.log('Titre input:', titreInput.value);
-  console.log('Categorie select:', categorieSelect.value);
-  console.log('Photo input files:', photoInput.files);
+  // Vérifier si les champs sont complétés
+  if (!titreInput.value || !categorieSelect.value || !photoInput.files[0]) {
+    // Afficher un message d'alerte
+    alert('Veuillez compléter tous les champs du formulaire');
+    return; // Arrêter l'exécution de la fonction
+  }
 
   // Créer un objet FormData avec les données du formulaire
   const formData = new FormData();
@@ -285,10 +288,9 @@ validationButton.addEventListener('click', async () => {
     // ...
   } else {
     // Afficher un message d'erreur
-    console.error('Erreur lors de l\'ajout du nouvel élément');
+    alert("Erreur lors de l'ajout du nouvel élément");
   }
 });
-
 
 
 
